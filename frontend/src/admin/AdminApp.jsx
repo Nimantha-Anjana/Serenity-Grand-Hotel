@@ -23,17 +23,14 @@ import Gallery from './pages/Gallery';
 import Services from './pages/Services';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Facilities from './pages/Facilities';
+
 
 
 /* ==========================================================================
    STATIC PLACEHOLDER COMPONENT FOR UPCOMING SERVICES PAGE
    ========================================================================== */
-const Facilities = () => (
-  <div className="luxury-card p-4">
-    <h3 className="brand-font text-navy">Hotel Facilities</h3>
-    <p className="text-muted mb-0">Facilities and spa reservation module coming in next step...</p>
-  </div>
-);
+
 
 const Messages = () => (
   <div className="luxury-card p-4">

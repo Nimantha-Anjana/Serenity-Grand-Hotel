@@ -1,0 +1,140 @@
+/* Facilities Module Styles - Serenity Grand Hotel */
+
+.facilities-container {
+  background-color: #F8F6F1;
+  min-height: 100vh;
+}
+
+/* Typography & Titles */
+.facilities-title {
+  color: #1B2A41;
+  font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.facilities-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.text-navy {
+  color: #1B2A41 !important;
+}
+
+.text-gold {
+  color: #C9A227 !important;
+}
+
+/* Luxury Buttons */
+.btn-gold {
+  background-color: #C9A227;
+  color: #FFFFFF;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-gold:hover {
+  background-color: #b08d1e;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+}
+
+.btn-outline-navy {
+  color: #1B2A41;
+  border-color: #1B2A41;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-navy:hover {
+  background-color: #1B2A41;
+  color: #FFFFFF;
+}
+
+/* Facility Card Customization */
+.facility-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background-color: #FFFFFF;
+}
+
+.facility-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(27, 42, 65, 0.08) !important;
+}
+
+.facility-img-wrapper {
+  height: 180px;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.facility-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.facility-card:hover .facility-img {
+  transform: scale(1.05);
+}
+
+.facility-icon-badge {
+  position: absolute;
+  bottom: -18px;
+  left: 20px;
+  width: 42px;
+  height: 42px;
+  background-color: #1B2A41;
+  color: #C9A227;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: 2px solid #FFFFFF;
+  z-index: 2;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.facility-hours {
+  background-color: #F8F6F1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+/* Modal Custom Styles */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  padding: 1rem;
+}
+
+.modal-dialog-custom {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-top: 4px solid #C9A227 !important;
+}
+
+/* Form Controls */
+.form-control:focus,
+.form-select:focus {
+  border-color: #C9A227;
+  box-shadow: 0 0 0 0.25rem rgba(201, 162, 39, 0.2);
+}
