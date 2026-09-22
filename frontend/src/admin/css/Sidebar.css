@@ -1,0 +1,249 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - SIDEBAR COMPONENT STYLES
+   ========================================================================== */
+
+/* Main Sidebar Container */
+.sidebar-container {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-navy);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+/* 1. Header & Brand Section */
+.sidebar-header {
+  height: var(--topbar-height);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-icon-box {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.05));
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  font-size: 1.25rem;
+  color: var(--color-gold);
+}
+
+.brand-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.3px;
+}
+
+.brand-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.btn-close-sidebar {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-close-sidebar:hover {
+  color: var(--color-gold);
+}
+
+/* Gold Accent Line Divider */
+.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3), transparent);
+  margin: 0 1rem;
+}
+
+/* 2. Navigation List */
+.sidebar-nav-wrapper {
+  flex-grow: 1;
+  padding: 1.5rem 0.75rem;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0 0.75rem 0.75rem;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.925rem;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.sidebar-nav .nav-icon {
+  font-size: 1.15rem;
+  margin-right: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: var(--transition-smooth);
+}
+
+.sidebar-nav .nav-label {
+  flex-grow: 1;
+}
+
+.nav-badge {
+  background-color: var(--color-gold);
+  color: var(--color-navy);
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50px;
+}
+
+/* Hover State */
+.sidebar-nav .nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar-nav .nav-link:hover .nav-icon {
+  color: var(--color-gold);
+  transform: translateX(2px);
+}
+
+/* Active State (Highlighted Luxury Gold Pill) */
+.sidebar-nav .nav-link.active {
+  color: #FFFFFF;
+  background: linear-gradient(90deg, var(--color-gold) 0%, rgba(201, 162, 39, 0.85) 100%);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.25);
+}
+
+.sidebar-nav .nav-link.active .nav-icon {
+  color: #FFFFFF;
+}
+
+.sidebar-nav .nav-link.active .nav-badge {
+  background-color: var(--color-navy);
+  color: var(--color-gold);
+}
+
+/* 3. Footer / Logout Button */
+.sidebar-footer {
+  padding: 0 0.75rem 1.25rem;
+}
+
+.btn-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.logout-icon {
+  font-size: 1.1rem;
+  margin-right: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-logout:hover {
+  background-color: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.4);
+  color: #ff6b6b;
+}
+
+.btn-logout:hover .logout-icon {
+  color: #ff6b6b;
+}
+
+/* 4. Responsive & Mobile Collapsible Overlay */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1035;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar-container {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-container.mobile-open {
+    transform: translateX(0);
+  }
+}
+
+/* Tablet Narrow Styling Adjustment */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  :root {
+    --sidebar-width: 240px;
+  }
+}

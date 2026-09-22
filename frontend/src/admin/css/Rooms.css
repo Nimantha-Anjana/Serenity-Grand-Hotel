@@ -1,0 +1,228 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - ROOMS PAGE STYLES
+   ========================================================================== */
+
+.rooms-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+/* 1. Filter Section */
+.filter-card .form-control,
+.filter-card .form-select {
+  border-color: var(--color-border);
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+}
+
+.filter-card .form-control:focus,
+.filter-card .form-select:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.search-group .input-group-text {
+  border-color: var(--color-border);
+}
+
+/* 2. Rooms Table Styling */
+.rooms-table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+}
+
+.rooms-table thead th {
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0.85rem 1rem;
+}
+
+.rooms-table tbody tr {
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: var(--transition-smooth);
+}
+
+.rooms-table tbody tr:hover {
+  background-color: var(--color-bg-light);
+}
+
+.rooms-table td {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rooms-table td:first-child {
+  border-left: 1px solid var(--color-border);
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.rooms-table td:last-child {
+  border-right: 1px solid var(--color-border);
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.room-thumb-img {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+}
+
+.badge-room-num {
+  font-weight: 700;
+  color: var(--color-navy);
+  background-color: rgba(27, 42, 65, 0.08);
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.badge-type {
+  font-size: 0.8rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.3em 0.75em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 50px;
+}
+
+.status-badge.available {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.occupied {
+  background-color: rgba(27, 42, 65, 0.12);
+  color: var(--color-navy);
+  border: 1px solid rgba(27, 42, 65, 0.3);
+}
+
+.status-badge.reserved {
+  background-color: rgba(201, 162, 39, 0.15);
+  color: #967610;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+}
+
+.status-badge.maintenance {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Action Buttons */
+.action-btn-group .btn-action {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  transition: var(--transition-smooth);
+}
+
+.action-btn-group .btn-action.view:hover {
+  background-color: var(--color-navy);
+  color: #FFFFFF;
+  border-color: var(--color-navy);
+}
+
+.action-btn-group .btn-action.edit:hover {
+  background-color: var(--color-gold);
+  color: #FFFFFF;
+  border-color: var(--color-gold);
+}
+
+.action-btn-group .btn-action.delete:hover {
+  background-color: #dc2626;
+  color: #FFFFFF;
+  border-color: #dc2626;
+}
+
+/* 3. Modal Dialog Custom Overlay */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.custom-modal-dialog {
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+.custom-modal-dialog.delete-dialog {
+  max-width: 440px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content-box {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.view-modal-img {
+  max-height: 240px;
+  object-fit: cover;
+}
+
+.delete-icon-box {
+  width: 56px;
+  height: 56px;
+  background-color: rgba(220, 38, 38, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}

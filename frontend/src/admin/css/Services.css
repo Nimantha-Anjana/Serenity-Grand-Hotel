@@ -1,0 +1,128 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - SERVICES MANAGEMENT MODULE STYLES
+   ========================================================================== */
+
+.services-page {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Color & Text Helpers */
+.text-primary-navy {
+  color: var(--color-primary, #1B2A41) !important;
+}
+
+.text-gold {
+  color: var(--color-accent, #C9A227) !important;
+}
+
+.bg-gold {
+  background-color: var(--color-accent, #C9A227) !important;
+}
+
+.fs-7 {
+  font-size: 0.85rem;
+}
+
+.fs-8 {
+  font-size: 0.75rem;
+}
+
+.bg-gold-subtle {
+  background-color: rgba(201, 162, 39, 0.12);
+}
+
+.bg-navy-subtle {
+  background-color: rgba(27, 42, 65, 0.08);
+}
+
+/* Card Visuals */
+.service-card {
+  transition: transform var(--transition-fast, 0.2s ease-in-out), box-shadow var(--transition-fast, 0.2s ease-in-out);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(27, 42, 65, 0.08));
+}
+
+.service-img-wrapper {
+  height: 180px;
+  overflow: hidden;
+}
+
+.service-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover .service-img {
+  transform: scale(1.05);
+}
+
+.service-status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 50px;
+}
+
+.service-short-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* Standard property for cross-browser compatibility */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.6em;
+}
+
+.modal-service-img {
+  height: 220px;
+  object-fit: cover;
+}
+
+/* Pagination Styling */
+.luxury-pagination .page-link {
+  color: var(--color-primary, #1B2A41);
+  border-color: var(--color-border, #E8E4D9);
+  padding: 0.375rem 0.75rem;
+}
+
+.luxury-pagination .page-item.active .page-link {
+  background-color: var(--color-primary, #1B2A41);
+  border-color: var(--color-primary, #1B2A41);
+  color: #FFFFFF;
+}
+
+/* Modal Overlay */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  padding: 1rem;
+}
+
+.modal-content-custom {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--border-radius-md, 12px);
+  animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

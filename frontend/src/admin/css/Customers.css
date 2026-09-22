@@ -1,0 +1,128 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - CUSTOMERS MODULE STYLES
+   ========================================================================== */
+
+.customers-page {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Color & Text Helpers */
+.text-primary-navy {
+  color: var(--color-primary, #1B2A41) !important;
+}
+
+.text-gold {
+  color: var(--color-accent, #C9A227) !important;
+}
+
+.fs-7 {
+  font-size: 0.85rem;
+}
+
+.fs-8 {
+  font-size: 0.75rem;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+/* Stats Icons */
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bg-navy-subtle {
+  background-color: rgba(27, 42, 65, 0.08);
+}
+
+.bg-gold-subtle {
+  background-color: rgba(201, 162, 39, 0.12);
+}
+
+/* Form Controls */
+.search-input:focus,
+.luxury-select:focus {
+  border-color: var(--color-accent, #C9A227);
+  box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.cust-table-avatar {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border: 1px solid var(--color-border, #E8E4D9);
+}
+
+/* Status Badges */
+.badge-cust {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35em 0.75em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+}
+
+.badge-new {
+  background-color: #E8F0FE;
+  color: #1A73E8;
+  border: 1px solid rgba(26, 115, 232, 0.2);
+}
+
+.badge-returning {
+  background-color: #FAF5E8;
+  color: #C9A227;
+  border: 1px solid rgba(201, 162, 39, 0.3);
+}
+
+.badge-active {
+  background-color: #E6F4EA;
+  color: #137333;
+  border: 1px solid rgba(19, 115, 51, 0.2);
+}
+
+/* Modal Customization */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  padding: 1rem;
+}
+
+.modal-content-custom {
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--border-radius-md, 12px);
+  animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-cust-avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid var(--color-accent, #C9A227);
+}

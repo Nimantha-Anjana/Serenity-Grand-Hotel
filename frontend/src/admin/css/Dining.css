@@ -1,0 +1,130 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - DINING MANAGEMENT MODULE STYLES
+   ========================================================================== */
+
+.dining-page {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Color & Text Helpers */
+.text-primary-navy {
+  color: var(--color-primary, #1B2A41) !important;
+}
+
+.text-gold {
+  color: var(--color-accent, #C9A227) !important;
+}
+
+.fs-7 {
+  font-size: 0.85rem;
+}
+
+.fs-8 {
+  font-size: 0.75rem;
+}
+
+.bg-gold-subtle {
+  background-color: rgba(201, 162, 39, 0.12);
+}
+
+/* Restaurant Card Customization */
+.rest-card {
+  transition: transform var(--transition-fast, 0.2s ease-in-out), box-shadow var(--transition-fast, 0.2s ease-in-out);
+}
+
+.rest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(27, 42, 65, 0.08));
+}
+
+.rest-img-wrapper {
+  height: 200px;
+  overflow: hidden;
+}
+
+.rest-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.rest-card:hover .rest-img {
+  transform: scale(1.05);
+}
+
+.rest-status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 50px;
+  letter-spacing: 0.03em;
+}
+
+/* Menu Table & Availability Badges */
+.menu-item-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--color-border, #E8E4D9);
+}
+
+.badge-avail {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35em 0.75em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+}
+
+.avail-yes {
+  background-color: #E6F4EA;
+  color: #137333;
+  border: 1px solid rgba(19, 115, 51, 0.2);
+}
+
+.avail-no {
+  background-color: #FCE8E6;
+  color: #C5221F;
+  border: 1px solid rgba(197, 34, 31, 0.2);
+}
+
+/* Category Filter Bar */
+.category-pills .btn {
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Modal Customization */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  padding: 1rem;
+}
+
+.modal-content-custom {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--border-radius-md, 12px);
+  animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
