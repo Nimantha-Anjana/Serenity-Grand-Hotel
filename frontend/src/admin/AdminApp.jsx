@@ -24,6 +24,7 @@ import Services from './pages/Services';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Facilities from './pages/Facilities';
+import Messages from './pages/Messages';
 
 
 
@@ -32,12 +33,7 @@ import Facilities from './pages/Facilities';
    ========================================================================== */
 
 
-const Messages = () => (
-  <div className="luxury-card p-4">
-    <h3 className="brand-font text-navy">Guest Communications</h3>
-    <p className="text-muted mb-0">Concierge messaging module coming in next step...</p>
-  </div>
-);
+
 
 
 /* ==========================================================================
