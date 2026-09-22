@@ -18,10 +18,16 @@ import Gallery from './pages/Gallery';
 import Booking from './pages/Booking';
 import Contact from './pages/Contact';
 
+// Auth & Profile Pages
+import Login from './pages/User-Profile/Login/Login';
+import SignUp from './pages/User-Profile/Sign-up/SignUp';
+import Profile from './pages/User-Profile/Profile';
+import { AuthProvider } from './context/AuthContext';
+
 // The public website. BrowserRouter lives in src/App.jsx.
 function WebApp() {
   return (
-    <>
+    <AuthProvider>
       <ScrollToTop />
       {/* Navbar is rendered once here, above the Routes (pages must not render their own) */}
       <Navbar />
@@ -37,13 +43,17 @@ function WebApp() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<Profile />} />
+
         {/* Facilities page links to /spa -> show the Wellness services */}
         <Route path="/spa" element={<Navigate to="/services?category=Wellness" replace />} />
 
-        {/* Unknown URL -> Home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

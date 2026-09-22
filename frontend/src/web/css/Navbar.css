@@ -92,6 +92,55 @@
   width: 100%;
 }
 
+/* Right Side Actions Container */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Login Text Button */
+.nav-login-btn {
+  color: var(--nav-white);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.nav-login-btn:hover {
+  color: var(--nav-gold-accent);
+}
+
+/* Profile User Avatar Button */
+.nav-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-profile-btn:hover {
+  transform: translateY(-2px);
+}
+
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--nav-gold-accent);
+  background: #fff;
+}
+
+.nav-profile-name {
+  color: var(--nav-white);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 /* Book Now CTA Button */
 .btn-book-now {
   background-color: var(--nav-gold-accent);
@@ -184,6 +233,11 @@
   border-radius: 4px;
   display: block;
   margin-top: 0.5rem;
+}
+
+.auth-mobile-link {
+  color: var(--nav-gold-accent);
+  font-weight: 600;
 }
 
 /* Tighter spacing on mid-size screens so all links fit */

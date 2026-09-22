@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../css/Navbar.css';
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   // Mobile menu එක close කිරීමට helper function එකක්
   const closeMobileMenu = () => {
@@ -84,8 +86,23 @@ function Navbar() {
           </li>
         </ul>
 
-        {/* Right Side: Book Now Button (Desktop) */}
+        {/* Right Side: Auth & Book Now Button (Desktop) */}
         <div className="navbar-actions">
+          {user ? (
+            <Link to="/profile" className="nav-profile-btn" onClick={closeMobileMenu}>
+              <img 
+                src={user.avatar ? `http://localhost:5000${user.avatar}` : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'} 
+                alt="Profile" 
+                className="nav-avatar" 
+              />
+              <span className="nav-profile-name">{user.name.split(' ')[0]}</span>
+            </Link>
+          ) : (
+            <Link to="/login" className="nav-login-btn">
+              LOGIN
+            </Link>
+          )}
+
           <Link to="/booking" className="btn-book-now">
             BOOK NOW
           </Link>
@@ -142,6 +159,20 @@ function Navbar() {
               Contact
             </NavLink>
           </li>
+          {user ? (
+            <li>
+              <Link to="/profile" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">
+                My Profile
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">
+                Login
+              </Link>
+            </li>
+          )}
+          
           <li>
             <Link to="/booking" onClick={closeMobileMenu} className="mobile-btn-book">
               BOOK NOW
