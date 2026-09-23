@@ -7,12 +7,10 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useAuth();
 
-  // Mobile menu එක close කිරීමට helper function එකක්
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -29,64 +27,49 @@ function Navbar() {
         {/* Center / Right Navigation Links (Desktop) */}
         <ul className="nav-links">
           <li>
-            <NavLink 
-              to="/" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink 
-              to="/rooms" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/rooms" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Rooms
             </NavLink>
           </li>
           <li>
-            <NavLink 
-              to="/dining" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/dining" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Dining
             </NavLink>
           </li>
           <li>
-            <NavLink 
-              to="/facilities" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/facilities" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Facilities
             </NavLink>
           </li>
+          {/* ADDED ACTIVITIES LINK */}
           <li>
-            <NavLink 
-              to="/services" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/activities" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Activities
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/services" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Services
             </NavLink>
           </li>
           <li>
-            <NavLink 
-              to="/gallery" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/gallery" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Gallery
             </NavLink>
           </li>
           <li>
-            <NavLink 
-              to="/contact" 
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to="/contact" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               Contact
             </NavLink>
           </li>
         </ul>
 
-        {/* Right Side: Auth & Book Now Button (Desktop) */}
+        {/* Right Side Actions */}
         <div className="navbar-actions">
           {user ? (
             <Link to="/profile" className="nav-profile-btn" onClick={closeMobileMenu}>
@@ -108,7 +91,7 @@ function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Hamburger Menu */}
         <button 
           className="hamburger-btn" 
           onClick={toggleMobileMenu}
@@ -125,58 +108,41 @@ function Navbar() {
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-links">
           <li>
-            <NavLink to="/" onClick={closeMobileMenu} className="mobile-link">
-              Home
-            </NavLink>
+            <NavLink to="/" onClick={closeMobileMenu} className="mobile-link">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/rooms" onClick={closeMobileMenu} className="mobile-link">
-              Rooms
-            </NavLink>
+            <NavLink to="/rooms" onClick={closeMobileMenu} className="mobile-link">Rooms</NavLink>
           </li>
           <li>
-            <NavLink to="/dining" onClick={closeMobileMenu} className="mobile-link">
-              Dining
-            </NavLink>
+            <NavLink to="/dining" onClick={closeMobileMenu} className="mobile-link">Dining</NavLink>
           </li>
           <li>
-            <NavLink to="/facilities" onClick={closeMobileMenu} className="mobile-link">
-              Facilities
-            </NavLink>
+            <NavLink to="/facilities" onClick={closeMobileMenu} className="mobile-link">Facilities</NavLink>
+          </li>
+          {/* ADDED MOBILE ACTIVITIES LINK */}
+          <li>
+            <NavLink to="/activities" onClick={closeMobileMenu} className="mobile-link">Activities</NavLink>
           </li>
           <li>
-            <NavLink to="/services" onClick={closeMobileMenu} className="mobile-link">
-              Services
-            </NavLink>
+            <NavLink to="/services" onClick={closeMobileMenu} className="mobile-link">Services</NavLink>
           </li>
           <li>
-            <NavLink to="/gallery" onClick={closeMobileMenu} className="mobile-link">
-              Gallery
-            </NavLink>
+            <NavLink to="/gallery" onClick={closeMobileMenu} className="mobile-link">Gallery</NavLink>
           </li>
           <li>
-            <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">
-              Contact
-            </NavLink>
+            <NavLink to="/contact" onClick={closeMobileMenu} className="mobile-link">Contact</NavLink>
           </li>
           {user ? (
             <li>
-              <Link to="/profile" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">
-                My Profile
-              </Link>
+              <Link to="/profile" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">My Profile</Link>
             </li>
           ) : (
             <li>
-              <Link to="/login" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">
-                Login
-              </Link>
+              <Link to="/login" onClick={closeMobileMenu} className="mobile-link auth-mobile-link">Login</Link>
             </li>
           )}
-          
           <li>
-            <Link to="/booking" onClick={closeMobileMenu} className="mobile-btn-book">
-              BOOK NOW
-            </Link>
+            <Link to="/booking" onClick={closeMobileMenu} className="mobile-btn-book">BOOK NOW</Link>
           </li>
         </ul>
       </div>

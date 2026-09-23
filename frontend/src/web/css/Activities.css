@@ -1,0 +1,203 @@
+.activities-page {
+  background-color: var(--color-bg, #F8F6F1);
+  color: #121A26;
+}
+
+/* Hero Section */
+.activities-hero {
+  position: relative;
+  height: 340px;
+  background: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.activities-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(27, 42, 65, 0.75) 0%, rgba(27, 42, 65, 0.9) 100%);
+}
+
+.activities-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 1rem;
+}
+
+.activities-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.activities-hero-subtitle {
+  font-size: 1.1rem;
+  color: #E8E4D9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Intro */
+.activities-intro {
+  padding: 4rem 1rem 2rem;
+  max-width: 800px;
+}
+
+/* Activities Grid */
+.activities-grid-section {
+  padding: 2rem 1rem 5rem;
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.activity-card {
+  background: #FFFFFF;
+  border: 1px solid #E8E4D9;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(27, 42, 65, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(27, 42, 65, 0.12);
+  border-color: #C9A227;
+}
+
+.activity-img-wrapper {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.activity-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.activity-card:hover .activity-img {
+  transform: scale(1.08);
+}
+
+.activity-category {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #1B2A41;
+  color: #C9A227;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.activity-icon-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  background: rgba(27, 42, 65, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid #C9A227;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C9A227;
+  font-size: 1.25rem;
+}
+
+.activity-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.activity-meta {
+  font-size: 0.85rem;
+  color: #C9A227;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.activity-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1B2A41;
+  margin-bottom: 0.75rem;
+}
+
+.activity-desc {
+  font-size: 0.9rem;
+  color: #6C757D;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.btn-activity-book {
+  color: #1B2A41;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.btn-activity-book:hover {
+  color: #C9A227;
+}
+
+/* CTA */
+.activities-cta {
+  position: relative;
+  padding: 5rem 1rem;
+  background: url('https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+  color: #FFFFFF;
+}
+
+.activities-cta-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 42, 65, 0.85);
+}
+
+.activities-cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.activities-cta-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.activities-cta-content p {
+  color: #E8E4D9;
+  margin-bottom: 2rem;
+}
