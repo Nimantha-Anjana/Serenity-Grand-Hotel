@@ -25,6 +25,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Facilities from './pages/Facilities';
 import Messages from './pages/Messages';
+import Activities from './pages/Activities';
 
 
 
@@ -91,6 +92,7 @@ function AdminApp() {
         <Route path="messages" element={<Messages />} />
         <Route path="settings" element={<Settings />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="activities" element={<Activities />} />
 
         {/* Unknown /admin/... URL -> Dashboard */}
         <Route path="*" element={<Navigate to="/admin" replace />} />

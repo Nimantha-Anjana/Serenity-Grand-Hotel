@@ -17,6 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { path: '/admin/bookings', label: 'Bookings', icon: 'bi-calendar-check-fill' },
     { path: '/admin/customers', label: 'Customers', icon: 'bi-people-fill' },
     { path: '/admin/dining', label: 'Dining', icon: 'bi-cup-hot-fill' },
+    { path: '/admin/activities', label: 'Activities', icon: 'bi-compass-fill' },
     { path: '/admin/facilities', label: 'Facilities', icon: 'bi-stars' },
     { path: '/admin/gallery', label: 'Gallery', icon: 'bi-images' },
     { path: '/admin/services', label: 'Services', icon: 'bi-gear-wide-connected' },
