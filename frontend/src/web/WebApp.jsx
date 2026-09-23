@@ -17,6 +17,7 @@ import Services from './pages/Services';
 import Gallery from './pages/Gallery';
 import Booking from './pages/Booking';
 import Contact from './pages/Contact';
+import Activities from './pages/Activities';
 
 // Auth & Profile Pages
 import Login from './pages/User-Profile/Login/Login';
@@ -42,6 +43,7 @@ function WebApp() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/activities" element={<Activities />} />
 
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
