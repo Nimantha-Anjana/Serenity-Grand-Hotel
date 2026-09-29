@@ -95,6 +95,27 @@
   border: 1px solid rgba(197, 34, 31, 0.2);
 }
 
+/* Action Buttons Styling */
+.action-btn {
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.action-btn-icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.action-btn-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 /* Category Filter Bar */
 .category-pills .btn {
   font-size: 0.8rem;

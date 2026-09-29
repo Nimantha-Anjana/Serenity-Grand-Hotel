@@ -65,6 +65,21 @@
   border: 1px solid var(--color-border, #E8E4D9);
 }
 
+/* Action Buttons Styling */
+.action-buttons .btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-buttons .btn-action:hover {
+  transform: translateY(-2px);
+}
+
 /* Status Badges */
 .badge-cust {
   display: inline-flex;

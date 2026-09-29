@@ -115,7 +115,7 @@ export default function Facilities() {
     return matchesSearch && matchesStatus;
   });
 
-  // Open Add Modal
+  // Open Add Modal Form
   const handleOpenAddModal = () => {
     setEditingFacility(null);
     setFormData({
@@ -129,7 +129,7 @@ export default function Facilities() {
     setShowModal(true);
   };
 
-  // Open Edit Modal
+  // Open Edit Modal Form
   const handleOpenEditModal = (facility) => {
     setEditingFacility(facility);
     setFormData({
@@ -149,7 +149,7 @@ export default function Facilities() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Image Upload Simulation
+  // Handle Image Upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -164,12 +164,14 @@ export default function Facilities() {
     if (!formData.name.trim()) return;
 
     if (editingFacility) {
+      // Edit logic
       setFacilities((prev) =>
         prev.map((item) =>
           item.id === editingFacility.id ? { ...item, ...formData } : item
         )
       );
     } else {
+      // Add logic
       const newFacility = {
         id: Date.now(),
         ...formData
@@ -298,7 +300,7 @@ export default function Facilities() {
         )}
       </div>
 
-      {/* Add / Edit Modal */}
+      {/* Add / Edit Form Modal */}
       {showModal && (
         <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
           <div className="modal-dialog-custom card border-0 shadow-lg rounded-3 p-4 bg-white">
@@ -313,119 +315,121 @@ export default function Facilities() {
               ></button>
             </div>
 
-            <form onSubmit={handleSaveFacility}>
-              <div className="row g-3">
-                {/* Name */}
-                <div className="col-12">
-                  <label className="form-label small fw-bold text-navy">Facility Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    required
-                    placeholder="e.g. Grand Ballroom"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                {/* Hours */}
-                <div className="col-md-6">
-                  <label className="form-label small fw-bold text-navy">Opening Hours</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="hours"
-                    placeholder="e.g. 08:00 AM - 10:00 PM"
-                    value={formData.hours}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                {/* Status */}
-                <div className="col-md-6">
-                  <label className="form-label small fw-bold text-navy">Status</label>
-                  <select
-                    className="form-select"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-
-                {/* Description */}
-                <div className="col-12">
-                  <label className="form-label small fw-bold text-navy">Description</label>
-                  <textarea
-                    className="form-control"
-                    name="description"
-                    rows="3"
-                    placeholder="Provide details about services, access, or guidelines..."
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  ></textarea>
-                </div>
-
-                {/* Icon Selection */}
-                <div className="col-12">
-                  <label className="form-label small fw-bold text-navy">Select Icon</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light">
-                      <i className={`bi ${formData.icon}`}></i>
-                    </span>
-                    <select
-                      className="form-select"
-                      name="icon"
-                      value={formData.icon}
-                      onChange={handleInputChange}
-                    >
-                      {AVAILABLE_ICONS.map((item) => (
-                        <option key={item.value} value={item.value}>
-                          {item.label} ({item.value})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Image Upload UI */}
-                <div className="col-12">
-                  <label className="form-label small fw-bold text-navy">Facility Image</label>
-                  <div className="d-flex align-items-center gap-3">
-                    {formData.image && (
-                      <img
-                        src={formData.image}
-                        alt="Preview"
-                        className="rounded border"
-                        style={{ width: '60px', height: '60px', objectFit: 'cover' }}
-                      />
-                    )}
+            <form onSubmit={handleSaveFacility} className="modal-form-custom">
+              <div className="modal-body-scrollable">
+                <div className="row g-3">
+                  {/* Name */}
+                  <div className="col-12">
+                    <label className="form-label small fw-bold text-navy">Facility Name</label>
                     <input
-                      type="file"
+                      type="text"
                       className="form-control"
-                      accept="image/*"
-                      onChange={handleImageUpload}
+                      name="name"
+                      required
+                      placeholder="e.g. Grand Ballroom"
+                      value={formData.name}
+                      onChange={handleInputChange}
                     />
                   </div>
-                  <small className="text-muted d-block mt-1">
-                    Upload an image or paste a URL below.
-                  </small>
-                  <input
-                    type="text"
-                    className="form-control mt-2"
-                    name="image"
-                    placeholder="Image URL (optional)"
-                    value={formData.image}
-                    onChange={handleInputChange}
-                  />
+
+                  {/* Hours */}
+                  <div className="col-md-6">
+                    <label className="form-label small fw-bold text-navy">Opening Hours</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="hours"
+                      placeholder="e.g. 08:00 AM - 10:00 PM"
+                      value={formData.hours}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {/* Status */}
+                  <div className="col-md-6">
+                    <label className="form-label small fw-bold text-navy">Status</label>
+                    <select
+                      className="form-select"
+                      name="status"
+                      value={formData.status}
+                      onChange={handleInputChange}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+
+                  {/* Description */}
+                  <div className="col-12">
+                    <label className="form-label small fw-bold text-navy">Description</label>
+                    <textarea
+                      className="form-control"
+                      name="description"
+                      rows="3"
+                      placeholder="Provide details about services, access, or guidelines..."
+                      value={formData.description}
+                      onChange={handleInputChange}
+                    ></textarea>
+                  </div>
+
+                  {/* Icon Selection */}
+                  <div className="col-12">
+                    <label className="form-label small fw-bold text-navy">Select Icon</label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <i className={`bi ${formData.icon}`}></i>
+                      </span>
+                      <select
+                        className="form-select"
+                        name="icon"
+                        value={formData.icon}
+                        onChange={handleInputChange}
+                      >
+                        {AVAILABLE_ICONS.map((item) => (
+                          <option key={item.value} value={item.value}>
+                            {item.label} ({item.value})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Image Upload UI */}
+                  <div className="col-12">
+                    <label className="form-label small fw-bold text-navy">Facility Image</label>
+                    <div className="d-flex align-items-center gap-3">
+                      {formData.image && (
+                        <img
+                          src={formData.image}
+                          alt="Preview"
+                          className="rounded border"
+                          style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                        />
+                      )}
+                      <input
+                        type="file"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                    <small className="text-muted d-block mt-1">
+                      Upload an image or paste a URL below.
+                    </small>
+                    <input
+                      type="text"
+                      className="form-control mt-2"
+                      name="image"
+                      placeholder="Image URL (optional)"
+                      value={formData.image}
+                      onChange={handleInputChange}
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Modal Actions */}
-              <div className="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
+              <div className="d-flex justify-content-end gap-2 border-top pt-3 mt-3">
                 <button
                   type="button"
                   className="btn btn-light px-4"
@@ -434,7 +438,7 @@ export default function Facilities() {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-gold px-4">
-                  Save Facility
+                  {editingFacility ? 'Update Facility' : 'Save Facility'}
                 </button>
               </div>
             </form>

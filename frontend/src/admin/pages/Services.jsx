@@ -461,7 +461,7 @@ export default function Services() {
               <button type="button" className="btn-close" onClick={() => setViewService(null)}></button>
             </div>
 
-            <div className="modal-body-custom">
+            <div className="modal-body-custom modal-scrollable-body">
               <div className="position-relative mb-3">
                 <img
                   src={viewService.image}
@@ -504,7 +504,7 @@ export default function Services() {
               </div>
             </div>
 
-            <div className="d-flex justify-content-end pt-3 border-top">
+            <div className="d-flex justify-content-end pt-3 border-top mt-auto">
               <button className="btn btn-secondary" onClick={() => setViewService(null)}>
                 Close
               </button>
@@ -524,148 +524,150 @@ export default function Services() {
               <button type="button" className="btn-close" onClick={() => setEditService(null)}></button>
             </div>
 
-            <form onSubmit={handleSaveService}>
-              <div className="row g-3 mb-3">
-                <div className="col-12 col-md-8">
-                  <label className="form-label fs-7 fw-semibold">Service Name</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    value={editService.name}
-                    onChange={(e) => setEditService({ ...editService, name: e.target.value })}
-                  />
-                </div>
-                <div className="col-12 col-md-4">
-                  <label className="form-label fs-7 fw-semibold">Category</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={editService.category}
-                    onChange={(e) => setEditService({ ...editService, category: e.target.value })}
-                  >
-                    {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Short Description</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    value={editService.shortDesc}
-                    onChange={(e) => setEditService({ ...editService, shortDesc: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Full Description</label>
-                  <textarea
-                    className="form-control luxury-select"
-                    rows="3"
-                    value={editService.fullDesc}
-                    onChange={(e) => setEditService({ ...editService, fullDesc: e.target.value })}
-                  ></textarea>
-                </div>
-
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Price / Rate</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. From $35 or Complimentary"
-                    value={editService.price}
-                    onChange={(e) => setEditService({ ...editService, price: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Availability</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. Daily, 24/7 Service"
-                    value={editService.availability}
-                    onChange={(e) => setEditService({ ...editService, availability: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-6 col-md-3">
-                  <label className="form-label fs-7 fw-semibold">Opening Time</label>
-                  <input
-                    type="time"
-                    className="form-control luxury-select"
-                    value={editService.openingTime}
-                    onChange={(e) => setEditService({ ...editService, openingTime: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-6 col-md-3">
-                  <label className="form-label fs-7 fw-semibold">Closing Time</label>
-                  <input
-                    type="time"
-                    className="form-control luxury-select"
-                    value={editService.closingTime}
-                    onChange={(e) => setEditService({ ...editService, closingTime: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Bootstrap Icon Class</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    placeholder="bi-stars"
-                    value={editService.icon}
-                    onChange={(e) => setEditService({ ...editService, icon: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Service Image URL (UI Only)</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    value={editService.image}
-                    onChange={(e) => setEditService({ ...editService, image: e.target.value })}
-                  />
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Status</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={editService.status}
-                    onChange={(e) => setEditService({ ...editService, status: e.target.value })}
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-
-                <div className="col-6 d-flex align-items-end mb-2">
-                  <div className="form-check">
+            <form onSubmit={handleSaveService} className="d-flex flex-column modal-form-wrapper">
+              <div className="modal-scrollable-body pe-1">
+                <div className="row g-3 mb-3">
+                  <div className="col-12 col-md-8">
+                    <label className="form-label fs-7 fw-semibold">Service Name</label>
                     <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="featuredCheck"
-                      checked={editService.isFeatured}
-                      onChange={(e) => setEditService({ ...editService, isFeatured: e.target.checked })}
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      value={editService.name}
+                      onChange={(e) => setEditService({ ...editService, name: e.target.value })}
                     />
-                    <label className="form-check-label fs-7 fw-semibold" htmlFor="featuredCheck">
-                      Featured Service
-                    </label>
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label fs-7 fw-semibold">Category</label>
+                    <select
+                      className="form-select luxury-select"
+                      value={editService.category}
+                      onChange={(e) => setEditService({ ...editService, category: e.target.value })}
+                    >
+                      {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="col-12">
+                    <label className="form-label fs-7 fw-semibold">Short Description</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      value={editService.shortDesc}
+                      onChange={(e) => setEditService({ ...editService, shortDesc: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-12">
+                    <label className="form-label fs-7 fw-semibold">Full Description</label>
+                    <textarea
+                      className="form-control luxury-select"
+                      rows="3"
+                      value={editService.fullDesc}
+                      onChange={(e) => setEditService({ ...editService, fullDesc: e.target.value })}
+                    ></textarea>
+                  </div>
+
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Price / Rate</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. From $35 or Complimentary"
+                      value={editService.price}
+                      onChange={(e) => setEditService({ ...editService, price: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Availability</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. Daily, 24/7 Service"
+                      value={editService.availability}
+                      onChange={(e) => setEditService({ ...editService, availability: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-6 col-md-3">
+                    <label className="form-label fs-7 fw-semibold">Opening Time</label>
+                    <input
+                      type="time"
+                      className="form-control luxury-select"
+                      value={editService.openingTime}
+                      onChange={(e) => setEditService({ ...editService, openingTime: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-6 col-md-3">
+                    <label className="form-label fs-7 fw-semibold">Closing Time</label>
+                    <input
+                      type="time"
+                      className="form-control luxury-select"
+                      value={editService.closingTime}
+                      onChange={(e) => setEditService({ ...editService, closingTime: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Bootstrap Icon Class</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      placeholder="bi-stars"
+                      value={editService.icon}
+                      onChange={(e) => setEditService({ ...editService, icon: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-12">
+                    <label className="form-label fs-7 fw-semibold">Service Image URL (UI Only)</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      value={editService.image}
+                      onChange={(e) => setEditService({ ...editService, image: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label fs-7 fw-semibold">Status</label>
+                    <select
+                      className="form-select luxury-select"
+                      value={editService.status}
+                      onChange={(e) => setEditService({ ...editService, status: e.target.value })}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+
+                  <div className="col-6 d-flex align-items-end mb-2">
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="featuredCheck"
+                        checked={editService.isFeatured}
+                        onChange={(e) => setEditService({ ...editService, isFeatured: e.target.checked })}
+                      />
+                      <label className="form-check-label fs-7 fw-semibold" htmlFor="featuredCheck">
+                        Featured Service
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="d-flex justify-content-end gap-2 pt-3 border-top">
+              <div className="d-flex justify-content-end gap-2 pt-3 border-top mt-auto">
                 <button type="button" className="btn btn-secondary" onClick={() => setEditService(null)}>
                   Cancel
                 </button>

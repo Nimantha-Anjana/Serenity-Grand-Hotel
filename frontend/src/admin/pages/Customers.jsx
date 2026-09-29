@@ -95,6 +95,19 @@ const INITIAL_CUSTOMERS = [
   }
 ];
 
+const INITIAL_FORM_STATE = {
+  name: '',
+  email: '',
+  phone: '',
+  address: '',
+  status: 'New',
+  regDate: new Date().toISOString().split('T')[0],
+  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
+  totalBookings: 0,
+  lastVisit: '-',
+  recentBookings: []
+};
+
 export default function Customers() {
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
   const [searchTerm, setSearchTerm] = useState('');
@@ -103,6 +116,7 @@ export default function Customers() {
 
   // Modals state
   const [viewCustomer, setViewCustomer] = useState(null);
+  const [addCustomer, setAddCustomer] = useState(null);
   const [editCustomer, setEditCustomer] = useState(null);
   const [deleteCustomer, setDeleteCustomer] = useState(null);
 
@@ -126,6 +140,16 @@ export default function Customers() {
   const activeCount = customers.filter(c => c.status === 'Active').length;
 
   // Handlers
+  const handleAddSubmit = (e) => {
+    e.preventDefault();
+    const newEntry = {
+      ...addCustomer,
+      id: Date.now()
+    };
+    setCustomers(prev => [newEntry, ...prev]);
+    setAddCustomer(null);
+  };
+
   const handleEditSave = (e) => {
     e.preventDefault();
     setCustomers(prev =>
@@ -161,10 +185,10 @@ export default function Customers() {
           <p className="text-muted mb-0">View and manage hotel customer profiles & history.</p>
         </div>
         <button 
-          className="btn btn-luxury-gold mt-3 mt-md-0 d-flex align-items-center gap-2"
-          onClick={() => setEditCustomer({ id: Date.now(), name: '', email: '', phone: '', address: '', regDate: new Date().toISOString().split('T')[0], totalBookings: 0, lastVisit: '-', status: 'New', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80', recentBookings: [] })}
+          className="btn btn-luxury-gold mt-3 mt-md-0 d-flex align-items-center gap-2 px-3 py-2"
+          onClick={() => setAddCustomer({ ...INITIAL_FORM_STATE })}
         >
-          <i className="bi bi-person-plus-fill"></i>
+          <i className="bi bi-person-plus-fill fs-6"></i>
           <span>Add New Customer</span>
         </button>
       </div>
@@ -263,7 +287,7 @@ export default function Customers() {
 
           <div className="col-12 col-md-1 col-lg-2 d-flex justify-content-end">
             <button
-              className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center"
+              className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-1"
               title="Reset Filters"
               onClick={() => {
                 setSearchTerm('');
@@ -271,7 +295,7 @@ export default function Customers() {
                 setRegDateFilter('');
               }}
             >
-              <i className="bi bi-arrow-counterclockwise me-1 d-none d-lg-inline"></i>
+              <i className="bi bi-arrow-counterclockwise"></i>
               <span>Reset</span>
             </button>
           </div>
@@ -316,27 +340,27 @@ export default function Customers() {
                     <td className="text-dark fs-7">{c.lastVisit}</td>
                     <td>{renderStatusBadge(c.status)}</td>
                     <td className="text-end">
-                      <div className="d-inline-flex gap-1">
+                      <div className="d-inline-flex gap-1 action-buttons">
                         <button
-                          className="btn btn-action btn-outline-primary"
+                          className="btn btn-action btn-outline-primary rounded-circle"
                           title="View Profile"
                           onClick={() => setViewCustomer(c)}
                         >
-                          <i className="bi bi-eye"></i>
+                          <i className="bi bi-eye-fill"></i>
                         </button>
                         <button
-                          className="btn btn-action btn-outline-warning text-dark"
+                          className="btn btn-action btn-outline-warning text-dark rounded-circle"
                           title="Edit Customer"
                           onClick={() => setEditCustomer({ ...c })}
                         >
-                          <i className="bi bi-pencil"></i>
+                          <i className="bi bi-pencil-square"></i>
                         </button>
                         <button
-                          className="btn btn-action btn-outline-danger"
+                          className="btn btn-action btn-outline-danger rounded-circle"
                           title="Delete Customer"
                           onClick={() => setDeleteCustomer(c)}
                         >
-                          <i className="bi bi-trash"></i>
+                          <i className="bi bi-trash3-fill"></i>
                         </button>
                       </div>
                     </td>
@@ -380,7 +404,10 @@ export default function Customers() {
         <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
           <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
             <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-              <h2 className="h4 mb-0 text-primary-navy">Customer Profile</h2>
+              <h2 className="h4 mb-0 text-primary-navy d-flex align-items-center gap-2">
+                <i className="bi bi-person-badge-fill text-gold"></i>
+                <span>Customer Profile</span>
+              </h2>
               <button type="button" className="btn-close" onClick={() => setViewCustomer(null)}></button>
             </div>
 
@@ -405,20 +432,26 @@ export default function Customers() {
               <div className="row g-3 mb-3">
                 <div className="col-6">
                   <div className="p-3 border rounded-3 h-100 bg-white">
-                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">Email Address</span>
+                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">
+                      <i className="bi bi-envelope-fill me-1 text-gold"></i>Email Address
+                    </span>
                     <span className="fs-7 text-dark fw-medium">{viewCustomer.email}</span>
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="p-3 border rounded-3 h-100 bg-white">
-                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">Phone Number</span>
+                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">
+                      <i className="bi bi-telephone-fill me-1 text-gold"></i>Phone Number
+                    </span>
                     <span className="fs-7 text-dark fw-medium">{viewCustomer.phone}</span>
                   </div>
                 </div>
                 <div className="col-12">
                   <div className="p-3 border rounded-3 bg-white">
-                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">Residential Address</span>
-                    <span className="fs-7 text-dark fw-medium">{viewCustomer.address}</span>
+                    <span className="text-uppercase text-muted fs-8 fw-bold d-block mb-1">
+                      <i className="bi bi-geo-alt-fill me-1 text-gold"></i>Residential Address
+                    </span>
+                    <span className="fs-7 text-dark fw-medium">{viewCustomer.address || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -460,19 +493,138 @@ export default function Customers() {
             </div>
 
             <div className="d-flex justify-content-end pt-3 border-top">
-              <button className="btn btn-secondary" onClick={() => setViewCustomer(null)}>Close</button>
+              <button className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setViewCustomer(null)}>
+                <i className="bi bi-x-circle"></i> Close
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 6. Edit / Add Modal */}
+      {/* 6. Add New Customer Modal */}
+      {addCustomer && (
+        <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
+          <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
+            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
+              <h2 className="h4 mb-0 text-primary-navy d-flex align-items-center gap-2">
+                <i className="bi bi-person-plus-fill text-gold"></i>
+                <span>Add New Customer</span>
+              </h2>
+              <button type="button" className="btn-close" onClick={() => setAddCustomer(null)}></button>
+            </div>
+
+            <form onSubmit={handleAddSubmit}>
+              <div className="row g-3 mb-3">
+                <div className="col-12">
+                  <label className="form-label fs-7 fw-semibold">
+                    Full Name <span className="text-danger">*</span>
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      placeholder="e.g. John Doe"
+                      required
+                      value={addCustomer.name}
+                      onChange={e => setAddCustomer({ ...addCustomer, name: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <label className="form-label fs-7 fw-semibold">
+                    Email Address <span className="text-danger">*</span>
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
+                    <input
+                      type="email"
+                      className="form-control luxury-select"
+                      placeholder="name@example.com"
+                      required
+                      value={addCustomer.email}
+                      onChange={e => setAddCustomer({ ...addCustomer, email: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <label className="form-label fs-7 fw-semibold">
+                    Phone Number <span className="text-danger">*</span>
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      placeholder="+1 234 567 890"
+                      required
+                      value={addCustomer.phone}
+                      onChange={e => setAddCustomer({ ...addCustomer, phone: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-12">
+                  <label className="form-label fs-7 fw-semibold">Address</label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      placeholder="Street address, City, Country"
+                      value={addCustomer.address}
+                      onChange={e => setAddCustomer({ ...addCustomer, address: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <label className="form-label fs-7 fw-semibold">Status</label>
+                  <select
+                    className="form-select luxury-select"
+                    value={addCustomer.status}
+                    onChange={e => setAddCustomer({ ...addCustomer, status: e.target.value })}
+                  >
+                    <option value="New">New</option>
+                    <option value="Returning">Returning</option>
+                    <option value="Active">Active</option>
+                  </select>
+                </div>
+
+                <div className="col-6">
+                  <label className="form-label fs-7 fw-semibold">Registration Date</label>
+                  <input
+                    type="date"
+                    className="form-control luxury-select"
+                    value={addCustomer.regDate}
+                    onChange={e => setAddCustomer({ ...addCustomer, regDate: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="d-flex justify-content-end gap-2 pt-3 border-top">
+                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setAddCustomer(null)}>
+                  <i className="bi bi-x-lg"></i> Cancel
+                </button>
+                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
+                  <i className="bi bi-check-lg"></i> Create Customer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 7. Edit Customer Modal */}
       {editCustomer && (
         <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
           <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
             <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-              <h2 className="h4 mb-0 text-primary-navy">
-                {editCustomer.id ? 'Edit Customer Profile' : 'Add New Customer'}
+              <h2 className="h4 mb-0 text-primary-navy d-flex align-items-center gap-2">
+                <i className="bi bi-pencil-square text-gold"></i>
+                <span>Edit Customer Profile</span>
               </h2>
               <button type="button" className="btn-close" onClick={() => setEditCustomer(null)}></button>
             </div>
@@ -481,43 +633,59 @@ export default function Customers() {
               <div className="row g-3 mb-3">
                 <div className="col-12">
                   <label className="form-label fs-7 fw-semibold">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    value={editCustomer.name}
-                    onChange={e => setEditCustomer({ ...editCustomer, name: e.target.value })}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      value={editCustomer.name}
+                      onChange={e => setEditCustomer({ ...editCustomer, name: e.target.value })}
+                    />
+                  </div>
                 </div>
+
                 <div className="col-6">
                   <label className="form-label fs-7 fw-semibold">Email Address</label>
-                  <input
-                    type="email"
-                    className="form-control luxury-select"
-                    required
-                    value={editCustomer.email}
-                    onChange={e => setEditCustomer({ ...editCustomer, email: e.target.value })}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
+                    <input
+                      type="email"
+                      className="form-control luxury-select"
+                      required
+                      value={editCustomer.email}
+                      onChange={e => setEditCustomer({ ...editCustomer, email: e.target.value })}
+                    />
+                  </div>
                 </div>
+
                 <div className="col-6">
                   <label className="form-label fs-7 fw-semibold">Phone Number</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    value={editCustomer.phone}
-                    onChange={e => setEditCustomer({ ...editCustomer, phone: e.target.value })}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      value={editCustomer.phone}
+                      onChange={e => setEditCustomer({ ...editCustomer, phone: e.target.value })}
+                    />
+                  </div>
                 </div>
+
                 <div className="col-12">
                   <label className="form-label fs-7 fw-semibold">Address</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    value={editCustomer.address}
-                    onChange={e => setEditCustomer({ ...editCustomer, address: e.target.value })}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      value={editCustomer.address}
+                      onChange={e => setEditCustomer({ ...editCustomer, address: e.target.value })}
+                    />
+                  </div>
                 </div>
+
                 <div className="col-6">
                   <label className="form-label fs-7 fw-semibold">Status</label>
                   <select
@@ -530,6 +698,7 @@ export default function Customers() {
                     <option value="Active">Active</option>
                   </select>
                 </div>
+
                 <div className="col-6">
                   <label className="form-label fs-7 fw-semibold">Registration Date</label>
                   <input
@@ -542,28 +711,36 @@ export default function Customers() {
               </div>
 
               <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-                <button type="button" className="btn btn-secondary" onClick={() => setEditCustomer(null)}>Cancel</button>
-                <button type="submit" className="btn btn-luxury-gold">Save Changes</button>
+                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setEditCustomer(null)}>
+                  <i className="bi bi-x-lg"></i> Cancel
+                </button>
+                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
+                  <i className="bi bi-save-fill"></i> Save Changes
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* 7. Delete Modal */}
+      {/* 8. Delete Modal */}
       {deleteCustomer && (
         <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
           <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg text-center" style={{ maxWidth: '450px' }}>
             <div className="text-danger mb-3">
               <i className="bi bi-exclamation-triangle-fill fs-1"></i>
             </div>
-            <h3 className="h4 text-dark mb-2">Delete Customer Profile?</h3>
+            <h3 className="h4 text-dark mb-2 fw-bold">Delete Customer Profile?</h3>
             <p className="text-muted fs-7 mb-4">
               Are you sure you want to remove <strong>{deleteCustomer.name}</strong>? This action cannot be undone.
             </p>
             <div className="d-flex justify-content-center gap-2">
-              <button className="btn btn-secondary px-4" onClick={() => setDeleteCustomer(null)}>Cancel</button>
-              <button className="btn btn-danger px-4" onClick={handleDeleteConfirm}>Delete</button>
+              <button className="btn btn-secondary px-4 d-flex align-items-center gap-1" onClick={() => setDeleteCustomer(null)}>
+                <i className="bi bi-x-lg"></i> Cancel
+              </button>
+              <button className="btn btn-danger px-4 d-flex align-items-center gap-1" onClick={handleDeleteConfirm}>
+                <i className="bi bi-trash3-fill"></i> Delete
+              </button>
             </div>
           </div>
         </div>
