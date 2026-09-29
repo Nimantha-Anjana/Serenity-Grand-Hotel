@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import bookings from '../controllers/bookingController.js';
-import { adminOnly } from '../middleware/auth.js';
-
-const router = Router();
-
-router.post('/', bookings.create); // public: website booking form
-router.get('/', adminOnly, bookings.getAll);
-router.get('/:id', adminOnly, bookings.getOne);
-router.put('/:id', adminOnly, bookings.update); // e.g. change status
-router.delete('/:id', adminOnly, bookings.remove);
-
+import * as c from '../controllers/bookingController.js';
+import { protect } from '../middleware/auth.js';
+const router=Router();
+router.get('/availability', c.availability);
+router.post('/', protect, c.create);
+router.get('/', protect, c.list);
+router.get('/:id/payments', protect, c.payments);
+router.post('/:id/payments', protect, c.addPayment);
+router.get('/:id', protect, c.getOne);
+router.put('/:id', protect, c.update);
+router.delete('/:id', protect, c.remove);
 export default router;

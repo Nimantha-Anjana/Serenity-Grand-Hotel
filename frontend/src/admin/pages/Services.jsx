@@ -212,7 +212,7 @@ export default function Services() {
           }
         >
           <i className="bi bi-plus-lg"></i>
-          <span>+ Add Service</span>
+          <span>Add Service</span>
         </button>
       </div>
 

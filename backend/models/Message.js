@@ -1,14 +1,13 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
-// Messages sent from the website Contact form (shown on the admin "Messages" page)
 const Message = sequelize.define('Message', {
-  name: { type: DataTypes.STRING(150), allowNull: false },
-  email: { type: DataTypes.STRING(150), allowNull: false, validate: { isEmail: true } },
-  phone: { type: DataTypes.STRING(50) },
-  subject: { type: DataTypes.STRING(200) },
-  message: { type: DataTypes.TEXT, allowNull: false },
-  isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
-});
+ id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
+ conversationId: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, field: 'conversation_id' },
+ senderId: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, field: 'sender_id' },
+ messageText: { type: DataTypes.TEXT, allowNull: false, field: 'message_text' },
+ isRead: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false, field: 'is_read' },
+ sentAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW, field: 'sent_at' },
+}, { tableName: 'messages', timestamps: true, underscored: true });
 
 export default Message;

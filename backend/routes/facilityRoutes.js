@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import controller from '../controllers/facilityController.js';
+import { adminOnly } from '../middleware/auth.js';
+const router=Router();
+router.get('/', controller.getAll);
+router.get('/:id', controller.getOne);
+router.post('/', ...adminOnly, controller.create);
+router.put('/:id', ...adminOnly, controller.update);
+router.delete('/:id', ...adminOnly, controller.remove);
+export default router;
