@@ -571,7 +571,7 @@ export default function Bookings() {
       {showAddModal && (
         <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
           <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg" style={{ maxWidth: '650px' }}>
-            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
+            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom flex-shrink-0">
               <div>
                 <h2 className="h4 mb-0 text-primary-navy fw-bold">New Reservation</h2>
                 <span className="text-muted fs-7">Create a new guest booking entry</span>
@@ -583,185 +583,187 @@ export default function Bookings() {
               ></button>
             </div>
 
-            <form onSubmit={handleCreateReservation}>
-              <div className="row g-3 mb-3">
-                {/* Guest Details */}
-                <div className="col-12">
-                  <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">1. Guest Information</h6>
-                </div>
-                
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Guest Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. Lord Edward Sterling"
-                    value={newReservation.guestName}
-                    onChange={e => setNewReservation({ ...newReservation, guestName: e.target.value })}
-                  />
-                </div>
+            <form onSubmit={handleCreateReservation} className="d-flex flex-column overflow-hidden flex-grow-1">
+              <div className="modal-body-scrollable pe-1">
+                <div className="row g-3 mb-3">
+                  {/* Guest Details */}
+                  <div className="col-12">
+                    <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">1. Guest Information</h6>
+                  </div>
+                  
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Guest Full Name</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. Lord Edward Sterling"
+                      value={newReservation.guestName}
+                      onChange={e => setNewReservation({ ...newReservation, guestName: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Email Address</label>
-                  <input
-                    type="email"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. e.sterling@domain.com"
-                    value={newReservation.guestEmail}
-                    onChange={e => setNewReservation({ ...newReservation, guestEmail: e.target.value })}
-                  />
-                </div>
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Email Address</label>
+                    <input
+                      type="email"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. e.sterling@domain.com"
+                      value={newReservation.guestEmail}
+                      onChange={e => setNewReservation({ ...newReservation, guestEmail: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Phone Number</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. +94 701 709 967"
-                    value={newReservation.guestPhone}
-                    onChange={e => setNewReservation({ ...newReservation, guestPhone: e.target.value })}
-                  />
-                </div>
+                  <div className="col-12">
+                    <label className="form-label fs-7 fw-semibold">Phone Number</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. +94 701 709 967"
+                      value={newReservation.guestPhone}
+                      onChange={e => setNewReservation({ ...newReservation, guestPhone: e.target.value })}
+                    />
+                  </div>
 
-                {/* Accommodation Details */}
-                <div className="col-12 pt-2">
-                  <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">2. Accommodation & Dates</h6>
-                </div>
+                  {/* Accommodation Details */}
+                  <div className="col-12 pt-2">
+                    <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">2. Accommodation & Dates</h6>
+                  </div>
 
-                <div className="col-12 col-md-6">
-                  <label className="form-label fs-7 fw-semibold">Room Name</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="e.g. Royal Penthouse Suite"
-                    value={newReservation.roomName}
-                    onChange={e => setNewReservation({ ...newReservation, roomName: e.target.value })}
-                  />
-                </div>
+                  <div className="col-12 col-md-6">
+                    <label className="form-label fs-7 fw-semibold">Room Name</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="e.g. Royal Penthouse Suite"
+                      value={newReservation.roomName}
+                      onChange={e => setNewReservation({ ...newReservation, roomName: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6 col-md-3">
-                  <label className="form-label fs-7 fw-semibold">Room Type</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={newReservation.roomType}
-                    onChange={e => setNewReservation({ ...newReservation, roomType: e.target.value })}
-                  >
-                    <option value="Penthouse">Penthouse</option>
-                    <option value="Presidential">Presidential</option>
-                    <option value="Deluxe">Deluxe</option>
-                    <option value="Villa">Villa</option>
-                    <option value="Suite">Suite</option>
-                  </select>
-                </div>
+                  <div className="col-6 col-md-3">
+                    <label className="form-label fs-7 fw-semibold">Room Type</label>
+                    <select
+                      className="form-select luxury-select"
+                      value={newReservation.roomType}
+                      onChange={e => setNewReservation({ ...newReservation, roomType: e.target.value })}
+                    >
+                      <option value="Penthouse">Penthouse</option>
+                      <option value="Presidential">Presidential</option>
+                      <option value="Deluxe">Deluxe</option>
+                      <option value="Villa">Villa</option>
+                      <option value="Suite">Suite</option>
+                    </select>
+                  </div>
 
-                <div className="col-6 col-md-3">
-                  <label className="form-label fs-7 fw-semibold">Room Number</label>
-                  <input
-                    type="text"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="PH-01"
-                    value={newReservation.roomNumber}
-                    onChange={e => setNewReservation({ ...newReservation, roomNumber: e.target.value })}
-                  />
-                </div>
+                  <div className="col-6 col-md-3">
+                    <label className="form-label fs-7 fw-semibold">Room Number</label>
+                    <input
+                      type="text"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="PH-01"
+                      value={newReservation.roomNumber}
+                      onChange={e => setNewReservation({ ...newReservation, roomNumber: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Check-In Date</label>
-                  <input
-                    type="date"
-                    className="form-control luxury-select"
-                    required
-                    value={newReservation.checkIn}
-                    onChange={e => setNewReservation({ ...newReservation, checkIn: e.target.value })}
-                  />
-                </div>
+                  <div className="col-6">
+                    <label className="form-label fs-7 fw-semibold">Check-In Date</label>
+                    <input
+                      type="date"
+                      className="form-control luxury-select"
+                      required
+                      value={newReservation.checkIn}
+                      onChange={e => setNewReservation({ ...newReservation, checkIn: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Check-Out Date</label>
-                  <input
-                    type="date"
-                    className="form-control luxury-select"
-                    required
-                    value={newReservation.checkOut}
-                    onChange={e => setNewReservation({ ...newReservation, checkOut: e.target.value })}
-                  />
-                </div>
+                  <div className="col-6">
+                    <label className="form-label fs-7 fw-semibold">Check-Out Date</label>
+                    <input
+                      type="date"
+                      className="form-control luxury-select"
+                      required
+                      value={newReservation.checkOut}
+                      onChange={e => setNewReservation({ ...newReservation, checkOut: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Adults</label>
-                  <input
-                    type="number"
-                    min="1"
-                    className="form-control luxury-select"
-                    required
-                    value={newReservation.adults}
-                    onChange={e => setNewReservation({ ...newReservation, adults: e.target.value })}
-                  />
-                </div>
+                  <div className="col-6">
+                    <label className="form-label fs-7 fw-semibold">Adults</label>
+                    <input
+                      type="number"
+                      min="1"
+                      className="form-control luxury-select"
+                      required
+                      value={newReservation.adults}
+                      onChange={e => setNewReservation({ ...newReservation, adults: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Children</label>
-                  <input
-                    type="number"
-                    min="0"
-                    className="form-control luxury-select"
-                    required
-                    value={newReservation.children}
-                    onChange={e => setNewReservation({ ...newReservation, children: e.target.value })}
-                  />
-                </div>
+                  <div className="col-6">
+                    <label className="form-label fs-7 fw-semibold">Children</label>
+                    <input
+                      type="number"
+                      min="0"
+                      className="form-control luxury-select"
+                      required
+                      value={newReservation.children}
+                      onChange={e => setNewReservation({ ...newReservation, children: e.target.value })}
+                    />
+                  </div>
 
-                {/* Financials & Status */}
-                <div className="col-12 pt-2">
-                  <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">3. Financials & Status</h6>
-                </div>
+                  {/* Financials & Status */}
+                  <div className="col-12 pt-2">
+                    <h6 className="text-uppercase text-gold fw-bold fs-8 tracking-wider mb-2">3. Financials & Status</h6>
+                  </div>
 
-                <div className="col-12 col-md-4">
-                  <label className="form-label fs-7 fw-semibold">Total Amount ($)</label>
-                  <input
-                    type="number"
-                    className="form-control luxury-select"
-                    required
-                    placeholder="3500"
-                    value={newReservation.amount}
-                    onChange={e => setNewReservation({ ...newReservation, amount: e.target.value })}
-                  />
-                </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label fs-7 fw-semibold">Total Amount ($)</label>
+                    <input
+                      type="number"
+                      className="form-control luxury-select"
+                      required
+                      placeholder="3500"
+                      value={newReservation.amount}
+                      onChange={e => setNewReservation({ ...newReservation, amount: e.target.value })}
+                    />
+                  </div>
 
-                <div className="col-6 col-md-4">
-                  <label className="form-label fs-7 fw-semibold">Payment Status</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={newReservation.paymentStatus}
-                    onChange={e => setNewReservation({ ...newReservation, paymentStatus: e.target.value })}
-                  >
-                    <option value="Paid in Full">Paid in Full</option>
-                    <option value="Deposit Paid (50%)">Deposit Paid (50%)</option>
-                    <option value="Pending">Pending</option>
-                  </select>
-                </div>
+                  <div className="col-6 col-md-4">
+                    <label className="form-label fs-7 fw-semibold">Payment Status</label>
+                    <select
+                      className="form-select luxury-select"
+                      value={newReservation.paymentStatus}
+                      onChange={e => setNewReservation({ ...newReservation, paymentStatus: e.target.value })}
+                    >
+                      <option value="Paid in Full">Paid in Full</option>
+                      <option value="Deposit Paid (50%)">Deposit Paid (50%)</option>
+                      <option value="Pending">Pending</option>
+                    </select>
+                  </div>
 
-                <div className="col-6 col-md-4">
-                  <label className="form-label fs-7 fw-semibold">Booking Status</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={newReservation.status}
-                    onChange={e => setNewReservation({ ...newReservation, status: e.target.value })}
-                  >
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Checked In">Checked In</option>
-                  </select>
+                  <div className="col-6 col-md-4">
+                    <label className="form-label fs-7 fw-semibold">Booking Status</label>
+                    <select
+                      className="form-select luxury-select"
+                      value={newReservation.status}
+                      onChange={e => setNewReservation({ ...newReservation, status: e.target.value })}
+                    >
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Checked In">Checked In</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {/* Form Actions */}
-              <div className="d-flex justify-content-end gap-2 pt-3 border-top">
+              <div className="d-flex justify-content-end gap-2 pt-3 border-top flex-shrink-0">
                 <button
                   type="button"
                   className="btn btn-secondary"

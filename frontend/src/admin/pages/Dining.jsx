@@ -179,18 +179,22 @@ export default function Dining() {
                       <span>{rest.location}</span>
                     </div>
 
+                    {/* Action Buttons for Restaurant */}
                     <div className="d-flex gap-2">
                       <button 
-                        className="btn btn-sm btn-outline-primary flex-grow-1 d-flex align-items-center justify-content-center gap-1"
+                        className="btn btn-sm btn-outline-primary flex-grow-1 d-flex align-items-center justify-content-center gap-1 action-btn"
                         onClick={() => setEditRestaurant({ ...rest })}
+                        title="Edit Restaurant"
                       >
-                        <i className="bi bi-pencil"></i> Edit
+                        <i className="bi bi-pencil-square"></i>
+                        <span>Edit</span>
                       </button>
                       <button 
-                        className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center"
+                        className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center action-btn px-3"
                         onClick={() => setDeleteTarget({ type: 'restaurant', item: rest })}
+                        title="Delete Restaurant"
                       >
-                        <i className="bi bi-trash"></i>
+                        <i className="bi bi-trash3"></i>
                       </button>
                     </div>
                   </div>
@@ -274,16 +278,17 @@ export default function Dining() {
                         </span>
                       </td>
                       <td className="text-end">
-                        <div className="d-inline-flex gap-1">
+                        {/* Action Buttons for Menu Items */}
+                        <div className="d-inline-flex gap-2">
                           <button
-                            className="btn btn-action btn-outline-warning text-dark"
+                            className="btn btn-sm btn-outline-warning text-dark d-inline-flex align-items-center justify-content-center action-btn-icon"
                             title="Edit Menu Item"
                             onClick={() => setEditMenuItem({ ...item })}
                           >
                             <i className="bi bi-pencil"></i>
                           </button>
                           <button
-                            className="btn btn-action btn-outline-danger"
+                            className="btn btn-sm btn-outline-danger d-inline-flex align-items-center justify-content-center action-btn-icon"
                             title="Delete Menu Item"
                             onClick={() => setDeleteTarget({ type: 'menu', item })}
                           >
@@ -386,8 +391,12 @@ export default function Dining() {
               </div>
 
               <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-                <button type="button" className="btn btn-secondary" onClick={() => setEditRestaurant(null)}>Cancel</button>
-                <button type="submit" className="btn btn-luxury-gold">Save Restaurant</button>
+                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setEditRestaurant(null)}>
+                  <i className="bi bi-x-circle"></i> Cancel
+                </button>
+                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
+                  <i className="bi bi-check-circle"></i> Save Restaurant
+                </button>
               </div>
             </form>
           </div>
@@ -472,8 +481,12 @@ export default function Dining() {
               </div>
 
               <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-                <button type="button" className="btn btn-secondary" onClick={() => setEditMenuItem(null)}>Cancel</button>
-                <button type="submit" className="btn btn-luxury-gold">Save Menu Item</button>
+                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setEditMenuItem(null)}>
+                  <i className="bi bi-x-circle"></i> Cancel
+                </button>
+                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
+                  <i className="bi bi-check-circle"></i> Save Menu Item
+                </button>
               </div>
             </form>
           </div>
@@ -492,8 +505,12 @@ export default function Dining() {
               Are you sure you want to remove <strong>{deleteTarget.item.name}</strong>? This action cannot be undone.
             </p>
             <div className="d-flex justify-content-center gap-2">
-              <button className="btn btn-secondary px-4" onClick={() => setDeleteTarget(null)}>Cancel</button>
-              <button className="btn btn-danger px-4" onClick={handleDeleteConfirm}>Delete</button>
+              <button className="btn btn-secondary px-4 d-flex align-items-center gap-1" onClick={() => setDeleteTarget(null)}>
+                <i className="bi bi-x"></i> Cancel
+              </button>
+              <button className="btn btn-danger px-4 d-flex align-items-center gap-1" onClick={handleDeleteConfirm}>
+                <i className="bi bi-trash"></i> Delete
+              </button>
             </div>
           </div>
         </div>

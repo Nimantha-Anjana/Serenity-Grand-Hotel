@@ -111,7 +111,7 @@
   width: fit-content;
 }
 
-/* Modal Custom Styles */
+/* Modal Custom Styles - Fixed Scroll Behavior */
 .modal-backdrop-custom {
   position: fixed;
   top: 0;
@@ -127,9 +127,24 @@
 .modal-dialog-custom {
   width: 100%;
   max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
   border-top: 4px solid #C9A227 !important;
+  margin: auto;
+  overflow: hidden;
+}
+
+.modal-form-custom {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.modal-body-scrollable {
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
 /* Form Controls */

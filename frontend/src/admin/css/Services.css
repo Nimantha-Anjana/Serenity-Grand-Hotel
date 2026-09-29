@@ -100,7 +100,7 @@
   color: #FFFFFF;
 }
 
-/* Modal Overlay */
+/* Modal Overlay & Scroll Fixes */
 .modal-backdrop-custom {
   position: fixed;
   top: 0;
@@ -116,10 +116,25 @@
 .modal-content-custom {
   width: 100%;
   max-width: 650px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--border-radius-md, 12px);
   animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.modal-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal-scrollable-body {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
 }
 
 @keyframes modalSlideUp {
