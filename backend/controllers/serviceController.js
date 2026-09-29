@@ -1,4 +1,3 @@
-import Service from '../models/Service.js';
+import { Service } from '../models/index.js';
 import { crudController } from './crudController.js';
-
-export default crudController(Service, { order: [['id', 'ASC']] });
+export default crudController(Service, { order: [['id','ASC']], include: [] });

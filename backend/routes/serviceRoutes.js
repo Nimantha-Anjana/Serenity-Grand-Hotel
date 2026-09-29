@@ -1,13 +1,10 @@
 import { Router } from 'express';
-import services from '../controllers/serviceController.js';
+import controller from '../controllers/serviceController.js';
 import { adminOnly } from '../middleware/auth.js';
-
-const router = Router();
-
-router.get('/', services.getAll); // public
-router.get('/:id', services.getOne); // public
-router.post('/', adminOnly, services.create);
-router.put('/:id', adminOnly, services.update);
-router.delete('/:id', adminOnly, services.remove);
-
+const router=Router();
+router.get('/', controller.getAll);
+router.get('/:id', controller.getOne);
+router.post('/', ...adminOnly, controller.create);
+router.put('/:id', ...adminOnly, controller.update);
+router.delete('/:id', ...adminOnly, controller.remove);
 export default router;

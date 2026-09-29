@@ -1,57 +1,41 @@
 import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 import express from 'express';
 import cors from 'cors';
-
 import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
-
+import authRoutes from './routes/authRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
+import amenityRoutes from './routes/amenityRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import customerRoutes from './routes/customerRoutes.js';
-import diningRoutes from './routes/diningRoutes.js';
-import galleryRoutes from './routes/galleryRoutes.js';
+import facilityRoutes from './routes/facilityRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
+import activityRoutes from './routes/activityRoutes.js';
+import galleryCategoryRoutes from './routes/galleryCategoryRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
+import restaurantRoutes from './routes/restaurantRoutes.js';
+import menuCategoryRoutes from './routes/menuCategoryRoutes.js';
+import menuItemRoutes from './routes/menuItemRoutes.js';
+import diningRoutes from './routes/diningRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
-import authRoutes from './routes/authRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+import socialRoutes from './routes/socialRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
-const PLACEHOLDER_KEY = 'change-this-to-a-long-random-string';
-if (process.env.NODE_ENV === 'production' && (!process.env.ADMIN_API_KEY || process.env.ADMIN_API_KEY === PLACEHOLDER_KEY)) {
-  console.error('Set a real ADMIN_API_KEY in .env before running in production.');
-  process.exit(1);
-}
-
-const app = express();
-
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
-app.use(express.json({ limit: '10mb' }));
-
-// Serve uploaded avatar images statically
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
-
-app.use('/api/rooms', roomRoutes);
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/customers', customerRoutes);
-app.use('/api/dining', diningRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/auth', authRoutes);
-
-app.use(notFound);
-app.use(errorHandler);
-
-const PORT = process.env.PORT || 5000;
-
-connectDB()
-  .then(() => app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`)))
-  .catch((err) => {
-    console.error(err.message);
-    process.exit(1);
-  });
+const __dirname=path.dirname(fileURLToPath(import.meta.url));
+const app=express();
+const allowed=process.env.CLIENT_ORIGIN?process.env.CLIENT_ORIGIN.split(',').map(x=>x.trim()):['http://localhost:5173'];
+app.use(cors({origin:(origin,cb)=>{if(!origin||allowed.includes(origin))return cb(null,true);cb(new Error('CORS origin not allowed.'));}}));
+app.use(express.json({limit:'10mb'}));
+app.use(express.urlencoded({extended:true,limit:'10mb'}));
+app.use('/uploads',express.static(path.join(__dirname,'public','uploads')));
+app.get('/api/health',(req,res)=>res.json({status:'ok',service:'Serenity Grand Hotel API',time:new Date().toISOString()}));
+app.use('/api/auth',authRoutes);
+app.use('/api/rooms',roomRoutes);app.use('/api/amenities',amenityRoutes);app.use('/api/bookings',bookingRoutes);app.use('/api/customers',customerRoutes);app.use('/api/facilities',facilityRoutes);app.use('/api/services',serviceRoutes);app.use('/api/activities',activityRoutes);app.use('/api/gallery-categories',galleryCategoryRoutes);app.use('/api/gallery',galleryRoutes);app.use('/api/restaurants',restaurantRoutes);app.use('/api/menu-categories',menuCategoryRoutes);app.use('/api/menu-items',menuItemRoutes);app.use('/api/dining',diningRoutes);app.use('/api/messages',messageRoutes);app.use('/api/reviews',reviewRoutes);app.use('/api/dashboard',dashboardRoutes);app.use('/api/settings',settingsRoutes);app.use('/api/social-links',socialRoutes);app.use('/api/upload',uploadRoutes);
+app.use(notFound);app.use(errorHandler);
+const PORT=Number(process.env.PORT||5000);
+connectDB().then(()=>app.listen(PORT,()=>console.log(`API running on http://localhost:${PORT}`))).catch(e=>{console.error('Startup failed:',e);process.exit(1);});

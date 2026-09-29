@@ -2,18 +2,19 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
 const Service = sequelize.define('Service', {
-  name: { type: DataTypes.STRING(150), allowNull: false },
-  shortDesc: { type: DataTypes.STRING(300) },
-  fullDesc: { type: DataTypes.TEXT },
-  category: { type: DataTypes.STRING(100), allowNull: false }, // Wellness, Transportation, Dining ...
-  price: { type: DataTypes.STRING(100) }, // text on purpose: "From $35", "Contact us"
-  availability: { type: DataTypes.STRING(100) },
-  openingTime: { type: DataTypes.STRING(5), defaultValue: '00:00' }, // "HH:MM"
-  closingTime: { type: DataTypes.STRING(5), defaultValue: '23:59' },
-  icon: { type: DataTypes.STRING(100) }, // bootstrap-icons class used by the admin panel
-  image: { type: DataTypes.STRING(1000) },
-  status: { type: DataTypes.ENUM('Active', 'Inactive'), defaultValue: 'Active' },
-  isFeatured: { type: DataTypes.BOOLEAN, defaultValue: false },
-});
+ id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
+ name: { type: DataTypes.STRING(150), allowNull: false },
+ category: { type: DataTypes.STRING(100) },
+ shortDescription: { type: DataTypes.STRING(300), field: 'short_description' },
+ fullDescription: { type: DataTypes.TEXT, field: 'full_description' },
+ price: { type: DataTypes.STRING(100) },
+ availability: { type: DataTypes.STRING(100) },
+ openingTime: { type: DataTypes.TIME, field: 'opening_time' },
+ closingTime: { type: DataTypes.TIME, field: 'closing_time' },
+ icon: { type: DataTypes.STRING(100) },
+ image: { type: DataTypes.STRING(1000) },
+ status: { type: DataTypes.ENUM('Active','Inactive'), allowNull: false, defaultValue: 'Active' },
+ isFeatured: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false, field: 'is_featured' },
+}, { tableName: 'services', timestamps: true, underscored: true });
 
 export default Service;

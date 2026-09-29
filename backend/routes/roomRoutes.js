@@ -1,13 +1,10 @@
 import { Router } from 'express';
-import rooms from '../controllers/roomController.js';
+import controller from '../controllers/roomController.js';
 import { adminOnly } from '../middleware/auth.js';
-
-const router = Router();
-
-router.get('/', rooms.getAll); // public
-router.get('/:id', rooms.getOne); // public
-router.post('/', adminOnly, rooms.create);
-router.put('/:id', adminOnly, rooms.update);
-router.delete('/:id', adminOnly, rooms.remove);
-
+const router=Router();
+router.get('/', controller.getAll);
+router.get('/:id', controller.getOne);
+router.post('/', ...adminOnly, controller.create);
+router.put('/:id', ...adminOnly, controller.update);
+router.delete('/:id', ...adminOnly, controller.remove);
 export default router;

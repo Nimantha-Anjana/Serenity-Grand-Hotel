@@ -9,37 +9,24 @@ const {
   DB_NAME = 'serenity_grand_hotel',
 } = process.env;
 
-// One shared connection (pool) used by every model
 export const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   port: Number(DB_PORT),
   dialect: 'mysql',
-  logging: false, // set to console.log to see every SQL query
+  logging: process.env.DB_LOGGING === 'true' ? console.log : false,
   define: { charset: 'utf8mb4', collate: 'utf8mb4_unicode_ci' },
+  pool: { max: 10, min: 0, acquire: 30000, idle: 10000 },
+  timezone: '+00:00',
 });
 
-// Creates the database if it does not exist yet, then connects
-const connectDB = async () => {
-  if (!/^[A-Za-z0-9_]+$/.test(DB_NAME)) {
-    throw new Error('DB_NAME may only contain letters, numbers and underscores.');
-  }
-
-  const server = await mysql.createConnection({
-    host: DB_HOST,
-    port: Number(DB_PORT),
-    user: DB_USER,
-    password: DB_PASSWORD,
-  });
-  await server.query(
-    `CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
-  );
-  await server.end();
-
+export async function connectDB() {
+  if (!/^[A-Za-z0-9_]+$/.test(DB_NAME)) throw new Error('Invalid DB_NAME.');
+  const connection = await mysql.createConnection({ host: DB_HOST, port: Number(DB_PORT), user: DB_USER, password: DB_PASSWORD });
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+  await connection.end();
   await sequelize.authenticate();
-  await import('../models/index.js'); // registers the models + relations
-  await sequelize.sync(); // creates any missing tables (does not touch existing ones)
-
+  await import('../models/index.js');
   console.log(`MySQL connected: ${DB_HOST}:${DB_PORT}/${DB_NAME}`);
-};
+}
 
 export default connectDB;

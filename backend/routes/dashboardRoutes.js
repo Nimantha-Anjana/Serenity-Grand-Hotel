@@ -1,0 +1,1 @@
+import { Router } from 'express'; import { dashboard } from '../controllers/dashboardController.js'; import { adminOnly } from '../middleware/auth.js'; const router=Router(); router.get('/',...adminOnly,dashboard); export default router;

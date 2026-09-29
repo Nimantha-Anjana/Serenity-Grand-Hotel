@@ -1,33 +1,32 @@
 import jwt from 'jsonwebtoken';
-import CustomerProfile from '../models/CustomerProfile.js';
+import { User } from '../models/index.js';
 
-/**
- * Protects customer-facing routes.
- * Expects: Authorization: Bearer <token>
- */
+export function signToken(user) {
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+}
+
 export async function protect(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Not authorised — no token' });
-  }
-
-  const token = authHeader.split(' ')[1];
-
   try {
+    const header = req.get('authorization') || '';
+    if (!header.startsWith('Bearer ')) return res.status(401).json({ message: 'Authentication required.' });
+    const token = header.slice(7);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // Attach the customer record (without passwordHash) to the request
-    const customer = await CustomerProfile.findByPk(decoded.id, {
-      attributes: { exclude: ['passwordHash', 'otpCode', 'otpExpiry', 'resetToken', 'resetTokenExpiry'] },
-    });
-
-    if (!customer) {
-      return res.status(401).json({ message: 'User no longer exists' });
-    }
-
-    req.customer = customer;
+    const user = await User.findByPk(decoded.id);
+    if (!user || user.status !== 'active') return res.status(401).json({ message: 'Invalid or inactive account.' });
+    req.user = user;
     next();
-  } catch {
-    return res.status(401).json({ message: 'Token invalid or expired' });
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid or expired token.' });
   }
 }
+
+export function requireRole(...roles) {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ message: 'Authentication required.' });
+    if (!roles.includes(req.user.role)) return res.status(403).json({ message: 'You do not have permission to access this resource.' });
+    next();
+  };
+}
+
+export const adminOnly = [protect, requireRole('admin')];
+export const customerOnly = [protect, requireRole('customer')];

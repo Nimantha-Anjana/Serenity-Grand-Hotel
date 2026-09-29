@@ -1,21 +1,10 @@
 import { Router } from 'express';
-import { restaurants, menuItems } from '../controllers/diningController.js';
+import restaurantController from '../controllers/restaurantController.js';
+import menuCategoryController from '../controllers/menuCategoryController.js';
+import menuItemController from '../controllers/menuItemController.js';
 import { adminOnly } from '../middleware/auth.js';
-
-const router = Router();
-
-// Restaurants: /api/dining/restaurants
-router.get('/restaurants', restaurants.getAll); // public
-router.get('/restaurants/:id', restaurants.getOne); // public
-router.post('/restaurants', adminOnly, restaurants.create);
-router.put('/restaurants/:id', adminOnly, restaurants.update);
-router.delete('/restaurants/:id', adminOnly, restaurants.remove);
-
-// Menu items: /api/dining/menu
-router.get('/menu', menuItems.getAll); // public
-router.get('/menu/:id', menuItems.getOne); // public
-router.post('/menu', adminOnly, menuItems.create);
-router.put('/menu/:id', adminOnly, menuItems.update);
-router.delete('/menu/:id', adminOnly, menuItems.remove);
-
+const router=Router();
+router.get('/restaurants',restaurantController.getAll);router.get('/restaurants/:id',restaurantController.getOne);router.post('/restaurants',...adminOnly,restaurantController.create);router.put('/restaurants/:id',...adminOnly,restaurantController.update);router.delete('/restaurants/:id',...adminOnly,restaurantController.remove);
+router.get('/categories',menuCategoryController.getAll);router.get('/categories/:id',menuCategoryController.getOne);router.post('/categories',...adminOnly,menuCategoryController.create);router.put('/categories/:id',...adminOnly,menuCategoryController.update);router.delete('/categories/:id',...adminOnly,menuCategoryController.remove);
+router.get('/menu',menuItemController.getAll);router.get('/menu/:id',menuItemController.getOne);router.post('/menu',...adminOnly,menuItemController.create);router.put('/menu/:id',...adminOnly,menuItemController.update);router.delete('/menu/:id',...adminOnly,menuItemController.remove);
 export default router;
