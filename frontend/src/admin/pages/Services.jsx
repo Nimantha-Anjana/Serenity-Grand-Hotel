@@ -1,133 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAdminData } from '../context/adminDataContext';
+import { CATEGORIES } from '../data/services';
 import '../css/Services.css';
 
-const INITIAL_SERVICES = [
-  {
-    id: 1,
-    name: 'Airport Transfer',
-    shortDesc: 'Comfortable private transportation from the airport to the hotel.',
-    fullDesc: 'Enjoy seamless, stress-free travel with our luxury chauffeur service. Vehicles are equipped with high-speed Wi-Fi, refreshments, and climate control.',
-    category: 'Transportation',
-    price: 'From $35',
-    availability: '24/7 Service',
-    openingTime: '00:00',
-    closingTime: '23:59',
-    icon: 'bi-car-front-fill',
-    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: true
-  },
-  {
-    id: 2,
-    name: 'Spa & Wellness',
-    shortDesc: 'Relax and refresh with our professional spa treatments.',
-    fullDesc: 'Indulge in holistic body massages, organic facials, and aromatherapy tailored by world-class spa therapists in an atmosphere of ultimate tranquil luxury.',
-    category: 'Wellness',
-    price: 'From $40',
-    availability: 'Daily',
-    openingTime: '08:00',
-    closingTime: '21:00',
-    icon: 'bi-flower2',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: true
-  },
-  {
-    id: 3,
-    name: 'Room Service',
-    shortDesc: 'Enjoy delicious meals and beverages delivered directly to your room.',
-    fullDesc: 'Order from our curated in-room dining menu crafted by top Mediterranean chefs. Delivered fresh, hot, and elegant right to your door at any hour.',
-    category: 'Dining',
-    price: 'Available 24/7',
-    availability: '24/7 Service',
-    openingTime: '00:00',
-    closingTime: '23:59',
-    icon: 'bi-cup-hot-fill',
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: false
-  },
-  {
-    id: 4,
-    name: 'Laundry Service',
-    shortDesc: 'Professional laundry and pressing service for hotel guests.',
-    fullDesc: 'Same-day eco-friendly dry cleaning, delicate garment care, and express pressing services handled by experienced valet personnel.',
-    category: 'Guest Services',
-    price: 'From $10',
-    availability: 'Weekdays & Weekends',
-    openingTime: '07:00',
-    closingTime: '19:00',
-    icon: 'bi-basket2-fill',
-    image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: false
-  },
-  {
-    id: 5,
-    name: 'Event & Wedding Services',
-    shortDesc: 'Complete event planning and elegant wedding arrangements.',
-    fullDesc: 'Host grand celebrations in our oceanfront ballrooms. Our dedicated event coordinators manage floral decor, gourmet catering, audio-visual setups, and guest stays.',
-    category: 'Events',
-    price: 'Contact us',
-    availability: 'By Appointment',
-    openingTime: '09:00',
-    closingTime: '18:00',
-    icon: 'bi-stars',
-    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: true
-  },
-  {
-    id: 6,
-    name: 'Airport Pickup',
-    shortDesc: 'Private airport pickup service available for hotel guests.',
-    fullDesc: 'Personalized meet-and-greet service right at the arrival lounge. Luggage handling included with luxury SUV fleet options.',
-    category: 'Transportation',
-    price: 'From $35',
-    availability: '24/7 Service',
-    openingTime: '00:00',
-    closingTime: '23:59',
-    icon: 'bi-taxi-front-fill',
-    image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?w=500&auto=format&fit=crop&q=80',
-    status: 'Inactive',
-    isFeatured: false
-  },
-  {
-    id: 7,
-    name: 'Business Center',
-    shortDesc: 'Professional workspace and business facilities for guests.',
-    fullDesc: 'Equipped with high-speed workstations, secure printing, scanning, private video-conferencing pods, and secretarial support upon request.',
-    category: 'Business',
-    price: 'Complimentary',
-    availability: 'Daily',
-    openingTime: '06:00',
-    closingTime: '22:00',
-    icon: 'bi-laptop',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: false
-  },
-  {
-    id: 8,
-    name: 'Fitness Center',
-    shortDesc: 'Modern fitness equipment and wellness facilities.',
-    fullDesc: 'State-of-the-art TechnoGym cardio machinery, free weights, personal trainers on request, and complimentary sauna access.',
-    category: 'Recreation',
-    price: 'Complimentary',
-    availability: 'Daily',
-    openingTime: '05:00',
-    closingTime: '23:00',
-    icon: 'bi-heart-pulse-fill',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=80',
-    status: 'Active',
-    isFeatured: true
-  }
-];
 
-const CATEGORIES = ['All', 'Wellness', 'Transportation', 'Dining', 'Events', 'Business', 'Recreation', 'Guest Services'];
 
 export default function Services() {
-  const [services, setServices] = useState(INITIAL_SERVICES);
+  const { services, setServices } = useAdminData();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -135,7 +16,6 @@ export default function Services() {
 
   // Modals state
   const [viewService, setViewService] = useState(null);
-  const [editService, setEditService] = useState(null);
   const [deleteService, setDeleteService] = useState(null);
 
   // Filter Logic
@@ -160,17 +40,6 @@ export default function Services() {
   const inactiveCount = services.filter((s) => s.status === 'Inactive').length;
   const featuredCount = services.filter((s) => s.isFeatured).length;
 
-  // Form Submission (Add/Edit)
-  const handleSaveService = (e) => {
-    e.preventDefault();
-    if (editService.id) {
-      setServices((prev) => prev.map((s) => (s.id === editService.id ? editService : s)));
-    } else {
-      setServices((prev) => [...prev, { ...editService, id: Date.now() }]);
-    }
-    setEditService(null);
-  };
-
   // Delete Action
   const handleDeleteConfirm = () => {
     setServices((prev) => prev.filter((s) => s.id !== deleteService.id));
@@ -194,22 +63,7 @@ export default function Services() {
         </div>
         <button
           className="btn btn-luxury-gold mt-3 mt-md-0 d-flex align-items-center gap-2"
-          onClick={() =>
-            setEditService({
-              name: '',
-              shortDesc: '',
-              fullDesc: '',
-              category: 'Wellness',
-              price: '',
-              availability: 'Daily',
-              openingTime: '08:00',
-              closingTime: '20:00',
-              icon: 'bi-stars',
-              image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&auto=format&fit=crop&q=80',
-              status: 'Active',
-              isFeatured: false
-            })
-          }
+          onClick={() => navigate('/admin/services/add')}
         >
           <i className="bi bi-plus-lg"></i>
           <span>Add Service</span>
@@ -396,7 +250,7 @@ export default function Services() {
                       </button>
                       <button
                         className="btn btn-sm btn-outline-warning text-dark flex-grow-1 d-flex align-items-center justify-content-center gap-1"
-                        onClick={() => setEditService({ ...srv })}
+                        onClick={() => navigate(`/admin/services/edit/${srv.id}`)}
                       >
                         <i className="bi bi-pencil"></i> Edit
                       </button>
@@ -509,173 +363,6 @@ export default function Services() {
                 Close
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 7. Add / Edit Service Modal */}
-      {editService && (
-        <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
-          <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
-            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-              <h2 className="h4 mb-0 text-primary-navy">
-                {editService.id ? 'Edit Hotel Service' : 'Add New Service'}
-              </h2>
-              <button type="button" className="btn-close" onClick={() => setEditService(null)}></button>
-            </div>
-
-            <form onSubmit={handleSaveService} className="d-flex flex-column modal-form-wrapper">
-              <div className="modal-scrollable-body pe-1">
-                <div className="row g-3 mb-3">
-                  <div className="col-12 col-md-8">
-                    <label className="form-label fs-7 fw-semibold">Service Name</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      value={editService.name}
-                      onChange={(e) => setEditService({ ...editService, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-12 col-md-4">
-                    <label className="form-label fs-7 fw-semibold">Category</label>
-                    <select
-                      className="form-select luxury-select"
-                      value={editService.category}
-                      onChange={(e) => setEditService({ ...editService, category: e.target.value })}
-                    >
-                      {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label fs-7 fw-semibold">Short Description</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      value={editService.shortDesc}
-                      onChange={(e) => setEditService({ ...editService, shortDesc: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label fs-7 fw-semibold">Full Description</label>
-                    <textarea
-                      className="form-control luxury-select"
-                      rows="3"
-                      value={editService.fullDesc}
-                      onChange={(e) => setEditService({ ...editService, fullDesc: e.target.value })}
-                    ></textarea>
-                  </div>
-
-                  <div className="col-12 col-md-6">
-                    <label className="form-label fs-7 fw-semibold">Price / Rate</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      placeholder="e.g. From $35 or Complimentary"
-                      value={editService.price}
-                      onChange={(e) => setEditService({ ...editService, price: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-12 col-md-6">
-                    <label className="form-label fs-7 fw-semibold">Availability</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      placeholder="e.g. Daily, 24/7 Service"
-                      value={editService.availability}
-                      onChange={(e) => setEditService({ ...editService, availability: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-6 col-md-3">
-                    <label className="form-label fs-7 fw-semibold">Opening Time</label>
-                    <input
-                      type="time"
-                      className="form-control luxury-select"
-                      value={editService.openingTime}
-                      onChange={(e) => setEditService({ ...editService, openingTime: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-6 col-md-3">
-                    <label className="form-label fs-7 fw-semibold">Closing Time</label>
-                    <input
-                      type="time"
-                      className="form-control luxury-select"
-                      value={editService.closingTime}
-                      onChange={(e) => setEditService({ ...editService, closingTime: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-12 col-md-6">
-                    <label className="form-label fs-7 fw-semibold">Bootstrap Icon Class</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      placeholder="bi-stars"
-                      value={editService.icon}
-                      onChange={(e) => setEditService({ ...editService, icon: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label fs-7 fw-semibold">Service Image URL (UI Only)</label>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      value={editService.image}
-                      onChange={(e) => setEditService({ ...editService, image: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="col-6">
-                    <label className="form-label fs-7 fw-semibold">Status</label>
-                    <select
-                      className="form-select luxury-select"
-                      value={editService.status}
-                      onChange={(e) => setEditService({ ...editService, status: e.target.value })}
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                    </select>
-                  </div>
-
-                  <div className="col-6 d-flex align-items-end mb-2">
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="featuredCheck"
-                        checked={editService.isFeatured}
-                        onChange={(e) => setEditService({ ...editService, isFeatured: e.target.checked })}
-                      />
-                      <label className="form-check-label fs-7 fw-semibold" htmlFor="featuredCheck">
-                        Featured Service
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-end gap-2 pt-3 border-top mt-auto">
-                <button type="button" className="btn btn-secondary" onClick={() => setEditService(null)}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-luxury-gold">
-                  Save Service
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}

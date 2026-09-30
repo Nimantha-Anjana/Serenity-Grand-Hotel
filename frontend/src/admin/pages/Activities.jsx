@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAdminData } from '../context/adminDataContext';
 import '../css/Activities.css';
 
 /**
@@ -8,155 +10,10 @@ import '../css/Activities.css';
  */
 const Activities = () => {
   // Dummy Initial Activities Data
-  const initialActivities = [
-    {
-      id: 1,
-      name: 'Sunset Beach Walk',
-      category: 'Adventure',
-      duration: '1.5 Hours',
-      location: 'Private Beachfront',
-      price: '$25',
-      priceType: 'Paid',
-      status: 'Active',
-      featured: true,
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'A guided serene evening walk along the golden shores of Colombo.',
-      fullDesc: 'Experience the breathtaking coastal sunset with a complimentary tropical refreshment. Guided by our local environmental experts.',
-      days: ['Monday', 'Wednesday', 'Friday', 'Sunday'],
-      startTime: '17:30',
-      endTime: '19:00',
-      order: 1
-    },
-    {
-      id: 2,
-      name: 'Spa & Wellness Experience',
-      category: 'Wellness',
-      duration: '2 Hours',
-      location: 'Serenity Spa Pavilion',
-      price: '$120',
-      priceType: 'Paid',
-      status: 'Active',
-      featured: true,
-      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Holistic Ayurvedic massage and herbal hydrotherapy.',
-      fullDesc: 'Rejuvenate your body and mind with signature organic oils and professional therapists certified in ancient healing techniques.',
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      startTime: '09:00',
-      endTime: '11:00',
-      order: 2
-    },
-    {
-      id: 3,
-      name: 'Swimming Pool Experience',
-      category: 'Recreation',
-      duration: 'Flexible',
-      location: 'Infinity Ocean Pool',
-      price: 'Free',
-      priceType: 'Complimentary',
-      status: 'Active',
-      featured: false,
-      image: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Unlimited access to infinity pool with poolside lounge service.',
-      fullDesc: 'Relax in temperature-controlled waters while enjoying ocean breezes. Sun loungers and plush towels are provided complimentary.',
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      startTime: '07:00',
-      endTime: '20:00',
-      order: 3
-    },
-    {
-      id: 4,
-      name: 'Yoga & Meditation',
-      category: 'Wellness',
-      duration: '1 Hour',
-      location: 'Garden Lawn Gazebo',
-      price: 'Free',
-      priceType: 'Complimentary',
-      status: 'Active',
-      featured: true,
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Morning mindfulness session guided by certified yoga masters.',
-      fullDesc: 'Greet the sunrise with gentle hatha yoga movements and deep meditation sequences suitable for all fitness levels.',
-      days: ['Tuesday', 'Thursday', 'Saturday'],
-      startTime: '06:30',
-      endTime: '07:30',
-      order: 4
-    },
-    {
-      id: 5,
-      name: 'Sri Lankan Cooking Class',
-      category: 'Dining',
-      duration: '2.5 Hours',
-      location: 'Grand Culinary Studio',
-      price: '$65',
-      priceType: 'Paid',
-      status: 'Active',
-      featured: false,
-      image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Master authentic curry spicing and traditional coconut rotti.',
-      fullDesc: 'Hands-on culinary session with Executive Chef. Includes market spice tour, recipe booklet, and a 3-course tasting lunch.',
-      days: ['Wednesday', 'Saturday'],
-      startTime: '11:00',
-      endTime: '13:30',
-      order: 5
-    },
-    {
-      id: 6,
-      name: 'Cultural Tour',
-      category: 'Adventure',
-      duration: '4 Hours',
-      location: 'City Heritage Sites',
-      price: '$85',
-      priceType: 'Paid',
-      status: 'Inactive',
-      featured: false,
-      image: 'https://images.unsplash.com/photo-1588598198321-9735fd52233f?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Exclusive chauffeured tour of historic temples and colonial architecture.',
-      fullDesc: 'Private air-conditioned limousine transport with expert local historian guide. All entrance fees and tea stops included.',
-      days: ['Sunday'],
-      startTime: '08:30',
-      endTime: '12:30',
-      order: 6
-    },
-    {
-      id: 7,
-      name: 'Family Game Night',
-      category: 'Family',
-      duration: '2 Hours',
-      location: 'Kids & Family Lounge',
-      price: 'Free',
-      priceType: 'Complimentary',
-      status: 'Active',
-      featured: false,
-      image: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Board games, video console tournaments, and snack buffets.',
-      fullDesc: 'Fun-filled evening for guests of all ages featuring giant Jenga, trivia challenges, and complimentary mocktails.',
-      days: ['Friday'],
-      startTime: '19:00',
-      endTime: '21:00',
-      order: 7
-    },
-    {
-      id: 8,
-      name: 'Live Music Evening',
-      category: 'Entertainment',
-      duration: '3 Hours',
-      location: 'The Sapphire Lounge Bar',
-      price: 'Free',
-      priceType: 'Complimentary',
-      status: 'Active',
-      featured: true,
-      image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80',
-      shortDesc: 'Acoustic jazz standards and classical saxophone performances.',
-      fullDesc: 'Enjoy world-class musical performances paired with signature mixology cocktails and premium cigar selections.',
-      days: ['Thursday', 'Friday', 'Saturday'],
-      startTime: '20:00',
-      endTime: '23:00',
-      order: 8
-    }
-  ];
 
   // Primary State
-  const [activities, setActivities] = useState(initialActivities);
+  const { activities, setActivities } = useAdminData();
+  const navigate = useNavigate();
 
   // Filter States
   const [searchTerm, setSearchTerm] = useState('');
@@ -165,34 +22,13 @@ const Activities = () => {
   const [featuredFilter, setFeaturedFilter] = useState('All');
 
   // Modal States
-  const [showAddEditModal, setShowAddEditModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Active Selected Activity & Form Data
+  // Active Selected Activity (view / delete modals)
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    category: 'Wellness',
-    shortDesc: '',
-    fullDesc: '',
-    duration: '1 Hour',
-    location: '',
-    price: '',
-    priceType: 'Paid',
-    days: ['Monday', 'Wednesday', 'Friday'],
-    startTime: '09:00',
-    endTime: '10:00',
-    order: 1,
-    status: 'Active',
-    featured: false,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'
-  });
-
   // Category List Options
   const categories = ['Wellness', 'Recreation', 'Adventure', 'Family', 'Dining', 'Entertainment', 'Events'];
-  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   // Stats Calculations
   const totalActivities = activities.length;
@@ -233,38 +69,6 @@ const Activities = () => {
     }));
   };
 
-  // Open Add Modal
-  const handleOpenAdd = () => {
-    setSelectedActivity(null);
-    setFormData({
-      name: '',
-      category: 'Wellness',
-      shortDesc: '',
-      fullDesc: '',
-      duration: '1 Hour',
-      location: '',
-      price: '',
-      priceType: 'Paid',
-      days: ['Monday', 'Wednesday'],
-      startTime: '09:00',
-      endTime: '10:00',
-      order: activities.length + 1,
-      status: 'Active',
-      featured: false,
-      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80'
-    });
-    setImagePreview('');
-    setShowAddEditModal(true);
-  };
-
-  // Open Edit Modal
-  const handleOpenEdit = (act) => {
-    setSelectedActivity(act);
-    setFormData({ ...act });
-    setImagePreview(act.image);
-    setShowAddEditModal(true);
-  };
-
   // Open View Modal
   const handleOpenView = (act) => {
     setSelectedActivity(act);
@@ -275,43 +79,6 @@ const Activities = () => {
   const handleOpenDelete = (act) => {
     setSelectedActivity(act);
     setShowDeleteModal(true);
-  };
-
-  // Day Checkbox Toggle Handler
-  const handleDayToggle = (day) => {
-    const currentDays = formData.days || [];
-    if (currentDays.includes(day)) {
-      setFormData({ ...formData, days: currentDays.filter((d) => d !== day) });
-    } else {
-      setFormData({ ...formData, days: [...currentDays, day] });
-    }
-  };
-
-  // Local Image Upload Handler (UI Only)
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setImagePreview(url);
-      setFormData({ ...formData, image: url });
-    }
-  };
-
-  // Save Activity Form Submit Handler
-  const handleSaveActivity = (e) => {
-    e.preventDefault();
-    if (selectedActivity) {
-      // Update Existing
-      setActivities(activities.map((a) => (a.id === selectedActivity.id ? { ...formData, id: a.id } : a)));
-    } else {
-      // Add New
-      const newAct = {
-        ...formData,
-        id: Date.now()
-      };
-      setActivities([newAct, ...activities]);
-    }
-    setShowAddEditModal(false);
   };
 
   // Delete Confirm Handler
@@ -338,7 +105,7 @@ const Activities = () => {
           <h2 className="brand-font page-title mb-1">Activities</h2>
           <p className="text-muted small mb-0">Manage hotel activities, experiences, and guest recreations.</p>
         </div>
-        <button className="btn btn-luxury-gold mt-3 mt-md-0" onClick={handleOpenAdd}>
+        <button className="btn btn-luxury-gold mt-3 mt-md-0" onClick={() => navigate('/admin/activities/add')}>
           <i className="bi bi-plus-lg me-2"></i>Add Activity
         </button>
       </div>
@@ -566,7 +333,7 @@ const Activities = () => {
                         </button>
                         <button
                           className="btn btn-sm btn-action-edit"
-                          onClick={() => handleOpenEdit(act)}
+                          onClick={() => navigate(`/admin/activities/edit/${act.id}`)}
                           title="Edit Activity"
                         >
                           <i className="bi bi-pencil-fill"></i>
@@ -618,239 +385,6 @@ const Activities = () => {
           </ul>
         </div>
       </div>
-
-      {/* ==========================================================================
-          MODAL 1: ADD / EDIT ACTIVITY MODAL
-         ========================================================================== */}
-      {showAddEditModal && (
-        <div className="modal-backdrop-custom">
-          <div className="modal-dialog-custom">
-            <div className="modal-content-custom">
-              <div className="modal-header-custom d-flex justify-content-between align-items-center border-bottom pb-3">
-                <h5 className="brand-font mb-0 text-navy">
-                  <i className="bi bi-journal-plus me-2 text-gold"></i>
-                  {selectedActivity ? 'Edit Activity' : 'Add New Activity'}
-                </h5>
-                <button className="btn-close-custom" onClick={() => setShowAddEditModal(false)}>
-                  <i className="bi bi-x-lg"></i>
-                </button>
-              </div>
-
-              <form onSubmit={handleSaveActivity} className="pt-3">
-                <div className="row g-3 modal-body-scroll">
-                  {/* Activity Name */}
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Activity Name *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="e.g. Sunset Beach Walk"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Category */}
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Category *</label>
-                    <select
-                      className="form-select"
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    >
-                      {categories.map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Short Description */}
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Short Description *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Brief summary for card preview"
-                      value={formData.shortDesc}
-                      onChange={(e) => setFormData({ ...formData, shortDesc: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Full Description */}
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Full Description</label>
-                    <textarea
-                      className="form-control"
-                      rows="3"
-                      placeholder="Detailed activity description and inclusions"
-                      value={formData.fullDesc}
-                      onChange={(e) => setFormData({ ...formData, fullDesc: e.target.value })}
-                    ></textarea>
-                  </div>
-
-                  {/* Duration */}
-                  <div className="col-12 col-md-4">
-                    <label className="form-label small fw-semibold">Duration *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="e.g. 2 Hours"
-                      value={formData.duration}
-                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Location */}
-                  <div className="col-12 col-md-8">
-                    <label className="form-label small fw-semibold">Location *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="e.g. Oceanfront Pavilion"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Price */}
-                  <div className="col-12 col-md-4">
-                    <label className="form-label small fw-semibold">Price *</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="e.g. $45 or Free"
-                      value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Price Type */}
-                  <div className="col-12 col-md-4">
-                    <label className="form-label small fw-semibold">Price Type</label>
-                    <select
-                      className="form-select"
-                      value={formData.priceType}
-                      onChange={(e) => setFormData({ ...formData, priceType: e.target.value })}
-                    >
-                      <option value="Paid">Paid</option>
-                      <option value="Complimentary">Complimentary</option>
-                    </select>
-                  </div>
-
-                  {/* Display Order */}
-                  <div className="col-12 col-md-4">
-                    <label className="form-label small fw-semibold">Display Order</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={formData.order}
-                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
-                    />
-                  </div>
-
-                  {/* Start & End Time */}
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Starting Time</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={formData.startTime}
-                      onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Ending Time</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      value={formData.endTime}
-                      onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-                    />
-                  </div>
-
-                  {/* Available Days Checkboxes */}
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold d-block mb-2">Available Days</label>
-                    <div className="d-flex flex-wrap gap-2">
-                      {weekDays.map((day) => {
-                        const isChecked = (formData.days || []).includes(day);
-                        return (
-                          <div key={day} className="form-check form-check-inline">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              id={`day-${day}`}
-                              checked={isChecked}
-                              onChange={() => handleDayToggle(day)}
-                            />
-                            <label className="form-check-label small" htmlFor={`day-${day}`}>
-                              {day.slice(0, 3)}
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Activity Image & Preview */}
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Activity Image</label>
-                    <input type="file" className="form-control mb-2" accept="image/*" onChange={handleImageChange} />
-                    {(imagePreview || formData.image) && (
-                      <div className="modal-img-preview-box">
-                        <img src={imagePreview || formData.image} alt="Preview" className="img-preview" />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Status & Featured Options */}
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Status</label>
-                    <select
-                      className="form-select"
-                      value={formData.status}
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Inactive">Inactive</option>
-                    </select>
-                  </div>
-
-                  <div className="col-12 col-md-6 d-flex align-items-end">
-                    <div className="form-check mb-2">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="featuredCheck"
-                        checked={formData.featured}
-                        onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      />
-                      <label className="form-check-label fw-semibold small text-navy" htmlFor="featuredCheck">
-                        Mark as Featured Activity
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Buttons */}
-                <div className="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
-                  <button type="button" className="btn btn-outline-secondary" onClick={() => setShowAddEditModal(false)}>
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn btn-luxury-gold">
-                    Save Activity
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ==========================================================================
           MODAL 2: VIEW ACTIVITY DETAILS MODAL

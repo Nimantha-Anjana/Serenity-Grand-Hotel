@@ -136,7 +136,7 @@ const Dashboard = () => {
           <button type="button" className="btn btn-luxury-navy me-2">
             <i className="bi bi-download me-2"></i>Export Report
           </button>
-          <Link to="/admin/bookings" className="btn btn-luxury-gold">
+          <Link to="/admin/bookings/add" className="btn btn-luxury-gold">
             <i className="bi bi-plus-lg me-2"></i>New Reservation
           </Link>
         </div>
@@ -332,7 +332,7 @@ const Dashboard = () => {
             <span className="text-muted small d-block mb-3">Fast management shortcuts</span>
 
             <div className="quick-actions-grid">
-              <Link to="/admin/rooms" className="quick-action-btn">
+              <Link to="/admin/rooms/add" className="quick-action-btn">
                 <div className="action-icon bg-navy-light">
                   <i className="bi bi-door-open"></i>
                 </div>
@@ -346,7 +346,7 @@ const Dashboard = () => {
                 <span>View Bookings</span>
               </Link>
 
-              <Link to="/admin/dining" className="quick-action-btn">
+              <Link to="/admin/dining/menu/add" className="quick-action-btn">
                 <div className="action-icon bg-navy-light">
                   <i className="bi bi-cup-hot"></i>
                 </div>
