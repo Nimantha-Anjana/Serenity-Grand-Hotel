@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAdminData } from '../context/adminDataContext';
+import { messagesApi } from '../../services/api';
 import '../css/Dashboard.css';
 
 /**
@@ -8,119 +10,64 @@ import '../css/Dashboard.css';
  * guest inquiry list, and quick shortcut actions.
  */
 const Dashboard = () => {
+  // All figures below are calculated from the live database data.
+  const { rooms, bookings, customers } = useAdminData();
+  const [recentMessages, setRecentMessages] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    messagesApi.conversations()
+      .then((rows) => {
+        if (!active) return;
+        setRecentMessages(rows.slice(0, 3).map((c) => {
+          const last = c.messages?.[0];
+          const other = c.participants?.map((p) => p.user).find((u) => u && u.role !== 'admin');
+          return {
+            id: c.id,
+            sender: other?.name || c.subject || 'Guest',
+            preview: last?.messageText || 'No messages yet.',
+            time: last?.sentAt ? new Date(last.sentAt).toLocaleString() : '',
+            unread: last ? !last.isRead && last.senderId === other?.id : false
+          };
+        }));
+      })
+      .catch(() => { if (active) setRecentMessages([]); });
+    return () => { active = false; };
+  }, []);
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const countRooms = (status) => rooms.filter((r) => r.status === status).length;
+  const roomStatus = {
+    total: rooms.length,
+    available: countRooms('Available'),
+    occupied: countRooms('Occupied'),
+    reserved: countRooms('Reserved'),
+    maintenance: countRooms('Maintenance')
+  };
+  const pct = (n) => (roomStatus.total ? Math.round((n / roomStatus.total) * 100) : 0);
+  const bookingsToday = bookings.filter((b) => b.checkIn === todayStr).length;
+  const newCustomers = customers.filter((c) => c.status === 'New').length;
+
   // 1. KPI Cards Data
   const stats = [
-    {
-      title: 'Total Rooms',
-      value: '48',
-      change: '+2 added this month',
-      isPositive: true,
-      icon: 'bi-door-open-fill',
-      iconBg: 'navy'
-    },
-    {
-      title: 'Available Rooms',
-      value: '24',
-      change: '50% inventory ready',
-      isPositive: true,
-      icon: 'bi-check-circle-fill',
-      iconBg: 'gold'
-    },
-    {
-      title: "Today's Bookings",
-      value: '12',
-      change: '+15% vs yesterday',
-      isPositive: true,
-      icon: 'bi-calendar2-check-fill',
-      iconBg: 'navy'
-    },
-    {
-      title: 'Total Customers',
-      value: '1,248',
-      change: '+42 new this week',
-      isPositive: true,
-      icon: 'bi-people-fill',
-      iconBg: 'gold'
-    }
+    { title: 'Total Rooms', value: String(roomStatus.total), change: `${roomStatus.maintenance} under maintenance`, isPositive: roomStatus.maintenance === 0, icon: 'bi-door-open-fill', iconBg: 'navy' },
+    { title: 'Available Rooms', value: String(roomStatus.available), change: `${pct(roomStatus.available)}% inventory ready`, isPositive: true, icon: 'bi-check-circle-fill', iconBg: 'gold' },
+    { title: "Today's Check-ins", value: String(bookingsToday), change: `${bookings.length} bookings in total`, isPositive: true, icon: 'bi-calendar2-check-fill', iconBg: 'navy' },
+    { title: 'Total Customers', value: customers.length.toLocaleString(), change: `${newCustomers} without a booking yet`, isPositive: true, icon: 'bi-people-fill', iconBg: 'gold' }
   ];
 
-  // 2. Recent Bookings Dummy Data
-  const recentBookings = [
-    {
-      id: 'BK-7091',
-      guest: 'Eleanor Vance',
-      email: 'e.vance@example.com',
-      room: 'Royal Ocean Suite (301)',
-      checkIn: 'Oct 24, 2026',
-      checkOut: 'Oct 28, 2026',
-      status: 'Confirmed',
-      amount: '$1,850'
-    },
-    {
-      id: 'BK-7092',
-      guest: 'Marcus Sterling',
-      email: 'm.sterling@example.com',
-      room: 'Penthouse Suite (501)',
-      checkIn: 'Oct 25, 2026',
-      checkOut: 'Oct 30, 2026',
-      status: 'Checked-In',
-      amount: '$3,400'
-    },
-    {
-      id: 'BK-7093',
-      guest: 'Clara Oswald',
-      email: 'c.oswald@example.com',
-      room: 'Deluxe Garden Villa (104)',
-      checkIn: 'Oct 26, 2026',
-      checkOut: 'Oct 27, 2026',
-      status: 'Pending',
-      amount: '$620'
-    },
-    {
-      id: 'BK-7094',
-      guest: 'David Kim',
-      email: 'd.kim@example.com',
-      room: 'Executive Suite (205)',
-      checkIn: 'Oct 27, 2026',
-      checkOut: 'Oct 29, 2026',
-      status: 'Confirmed',
-      amount: '$980'
-    }
-  ];
-
-  // 3. Room Availability Metrics
-  const roomStatus = {
-    total: 48,
-    available: 24,
-    occupied: 18,
-    reserved: 4,
-    maintenance: 2
-  };
-
-  // 4. Recent Messages Dummy Data
-  const recentMessages = [
-    {
-      id: 1,
-      sender: 'Victoria Beckham',
-      preview: 'Could we arrange a private candlelit dinner at the rooftop terrace on Friday?',
-      time: '12 mins ago',
-      unread: true
-    },
-    {
-      id: 2,
-      sender: 'Jonathan Irons',
-      preview: 'Inquiring about late check-out availability for Room 202 tomorrow morning.',
-      time: '1 hour ago',
-      unread: true
-    },
-    {
-      id: 3,
-      sender: 'Elena Rostova',
-      preview: 'Thank you for the magnificent spa session. We left our feedback at reception.',
-      time: '3 hours ago',
-      unread: false
-    }
-  ];
+  // 2. Recent Bookings (latest 5 from the database)
+  const fmtDate = (d) => (d ? new Date(`${d}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-');
+  const recentBookings = bookings.slice(0, 5).map((b) => ({
+    id: b.id,
+    guest: b.guest.name,
+    email: b.guest.email,
+    room: `${b.room.name} (${b.room.number})`,
+    checkIn: fmtDate(b.checkIn),
+    checkOut: fmtDate(b.checkOut),
+    status: b.status,
+    amount: `$${Number(b.amount).toLocaleString()}`
+  }));
 
   return (
     <div className="dashboard-container">
@@ -204,7 +151,7 @@ const Dashboard = () => {
                       <td className="small">{booking.checkIn}</td>
                       <td className="small">{booking.checkOut}</td>
                       <td>
-                        <span className={`status-pill ${booking.status.toLowerCase().replace('-', '')}`}>
+                        <span className={`status-pill ${booking.status.toLowerCase().replace(/[-\s]/g, '')}`}>
                           {booking.status}
                         </span>
                       </td>
@@ -233,40 +180,40 @@ const Dashboard = () => {
               <div className="occupancy-progress-group mb-3">
                 <div className="d-flex justify-content-between small fw-semibold mb-1">
                   <span>Available</span>
-                  <span>{roomStatus.available} Rooms (50%)</span>
+                  <span>{roomStatus.available} Rooms ({pct(roomStatus.available)}%)</span>
                 </div>
                 <div className="progress custom-progress">
-                  <div className="progress-bar bg-gold" style={{ width: '50%' }}></div>
+                  <div className="progress-bar bg-gold" style={{ width: `${pct(roomStatus.available)}%` }}></div>
                 </div>
               </div>
 
               <div className="occupancy-progress-group mb-3">
                 <div className="d-flex justify-content-between small fw-semibold mb-1">
                   <span>Occupied</span>
-                  <span>{roomStatus.occupied} Rooms (37.5%)</span>
+                  <span>{roomStatus.occupied} Rooms ({pct(roomStatus.occupied)}%)</span>
                 </div>
                 <div className="progress custom-progress">
-                  <div className="progress-bar bg-navy" style={{ width: '37.5%' }}></div>
+                  <div className="progress-bar bg-navy" style={{ width: `${pct(roomStatus.occupied)}%` }}></div>
                 </div>
               </div>
 
               <div className="occupancy-progress-group mb-3">
                 <div className="d-flex justify-content-between small fw-semibold mb-1">
                   <span>Reserved</span>
-                  <span>{roomStatus.reserved} Rooms (8.3%)</span>
+                  <span>{roomStatus.reserved} Rooms ({pct(roomStatus.reserved)}%)</span>
                 </div>
                 <div className="progress custom-progress">
-                  <div className="progress-bar bg-info" style={{ width: '8.3%' }}></div>
+                  <div className="progress-bar bg-info" style={{ width: `${pct(roomStatus.reserved)}%` }}></div>
                 </div>
               </div>
 
               <div className="occupancy-progress-group mb-4">
                 <div className="d-flex justify-content-between small fw-semibold mb-1">
                   <span>Maintenance</span>
-                  <span>{roomStatus.maintenance} Rooms (4.2%)</span>
+                  <span>{roomStatus.maintenance} Rooms ({pct(roomStatus.maintenance)}%)</span>
                 </div>
                 <div className="progress custom-progress">
-                  <div className="progress-bar bg-danger" style={{ width: '4.2%' }}></div>
+                  <div className="progress-bar bg-danger" style={{ width: `${pct(roomStatus.maintenance)}%` }}></div>
                 </div>
               </div>
             </div>

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authApi, getApiUrl } from '../../services/api';
 
 const AuthContext = createContext(null);
 
-const API = 'http://localhost:5000/api/auth';
+const API = getApiUrl('auth');
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -40,14 +41,9 @@ export function AuthProvider({ children }) {
   async function refreshProfile() {
     if (!token) return;
     try {
-      const res = await fetch(`${API}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('sgh_user', JSON.stringify(data));
-        setUser(data);
-      }
+      const data = await authApi.me();
+      localStorage.setItem('sgh_user', JSON.stringify(data));
+      setUser(data);
     } catch {
       // silently ignore
     }

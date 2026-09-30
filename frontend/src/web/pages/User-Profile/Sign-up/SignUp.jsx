@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import { authApi } from '../../../../services/api';
 import './SignUp.css';
 
 function SignUp() {
@@ -51,13 +52,7 @@ function SignUp() {
       });
       if (avatar) formData.append('avatar', avatar);
 
-      const res = await fetch(`${API}/register`, {
-        method: 'POST',
-        body: formData, // fetch automatically sets multipart/form-data boundary
-      });
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      const data = await authApi.register(formData);
       
       if (data.devOtp) {
         setOtp(data.devOtp);
@@ -76,16 +71,8 @@ function SignUp() {
     setError('');
     
     try {
-      const res = await fetch(`${API}/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, otp }),
-      });
-      const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.message || 'Invalid OTP');
-      
-      login(data.token, data.customer);
+      const data = await authApi.verifyOtp(form.email, otp);
+      login(data.token, data.user || data.customer);
       navigate('/profile');
     } catch (err) {
       setError(err.message);
@@ -96,11 +83,7 @@ function SignUp() {
 
   const handleResendOtp = async () => {
     try {
-      await fetch(`${API}/resend-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email }),
-      });
+      await authApi.resendOtp(form.email);
       alert('A new OTP has been sent to your email.');
     } catch (err) {
       alert('Error resending OTP');

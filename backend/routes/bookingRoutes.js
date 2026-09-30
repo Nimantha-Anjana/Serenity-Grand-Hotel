@@ -3,6 +3,7 @@ import * as c from '../controllers/bookingController.js';
 import { protect } from '../middleware/auth.js';
 const router=Router();
 router.get('/availability', c.availability);
+router.post('/public', c.createPublic);
 router.post('/', protect, c.create);
 router.get('/', protect, c.list);
 router.get('/:id/payments', protect, c.payments);

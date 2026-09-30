@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 
 // Bootstrap + icons + admin layout styles.
 // These are imported here (not in main.jsx) because this whole admin app is lazy-loaded,
@@ -52,6 +52,28 @@ import AdminDataProvider from './context/AdminDataProvider';
 
 
 /* ==========================================================================
+   AUTH GUARD - only a logged-in admin may see the admin panel.
+   AdminDataProvider is mounted here (not around the login page) so that
+   the admin-only API calls are made only after a successful login.
+   ========================================================================== */
+const RequireAdmin = () => {
+  const location = useLocation();
+  let isAdmin = false;
+  try {
+    const user = JSON.parse(localStorage.getItem('sgh_user') || 'null');
+    isAdmin = !!localStorage.getItem('sgh_token') && user?.role === 'admin';
+  } catch {
+    isAdmin = false;
+  }
+  if (!isAdmin) return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
+  return (
+    <AdminDataProvider>
+      <Outlet />
+    </AdminDataProvider>
+  );
+};
+
+/* ==========================================================================
    MAIN ADMIN LAYOUT WRAPPER COMPONENT
    ========================================================================== */
 const AdminLayout = () => {
@@ -89,12 +111,12 @@ const AdminLayout = () => {
    ========================================================================== */
 function AdminApp() {
   return (
-    <AdminDataProvider>
     <Routes>
       {/* Standalone Login Route (Sidebar සහ Topbar රහිතව දිස් වේ) */}
       <Route path="login" element={<Login />} />
 
       {/* Dashboard & Inner Pages with Admin Layout */}
+      <Route element={<RequireAdmin />}>
       <Route element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="rooms" element={<Rooms />} />
@@ -138,8 +160,8 @@ function AdminApp() {
         {/* Unknown /admin/... URL -> Dashboard */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Route>
+      </Route>
     </Routes>
-    </AdminDataProvider>
   );
 }
 

@@ -93,6 +93,8 @@ const Topbar = ({ toggleSidebar }) => {
 
   const handleLogoutClick = () => {
     setShowProfileMenu(false);
+    localStorage.removeItem('sgh_token');
+    localStorage.removeItem('sgh_user');
     navigate('/admin/login');
   };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Login.css';
+import { authApi } from '../../services/api';
 
 /**
  * Login Page Component for Serenity Grand Hotel Admin Portal.
@@ -52,18 +53,14 @@ const Login = () => {
     }
 
     setIsLoading(true);
-
-    // Simulated API authentication delay
-    setTimeout(() => {
-      // Demo Credentials Verification
-      if (email === 'admin@serenitygrand.com' && password === 'admin123') {
-        setIsLoading(false);
+    authApi.login(email, password, 'admin')
+      .then((data) => {
+        localStorage.setItem('sgh_token', data.token);
+        localStorage.setItem('sgh_user', JSON.stringify(data.user));
         navigate('/admin');
-      } else {
-        setIsLoading(false);
-        setErrorMessage('Invalid email or password.');
-      }
-    }, 1000);
+      })
+      .catch((err) => setErrorMessage(err.message || 'Invalid email or password.'))
+      .finally(() => setIsLoading(false));
   };
 
   return (

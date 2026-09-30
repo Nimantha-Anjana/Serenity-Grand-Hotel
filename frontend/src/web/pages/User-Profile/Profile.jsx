@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Profile.css';
+import { authApi, messagesApi, getApiUrl } from '../../../services/api';
 
 function Profile() {
   const navigate = useNavigate();
@@ -54,14 +55,19 @@ function Profile() {
   const fetchMessages = async () => {
     if (!token) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/messages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        // Assume API returns messages for this customer
-        setMessages(data);
+      const conversations = await messagesApi.conversations();
+      const conversation = Array.isArray(conversations) ? conversations[0] : null;
+      if (conversation?.id) {
+        const data = await messagesApi.messages(conversation.id);
+        setMessages(data.map((m) => ({
+          ...m,
+          content: m.messageText,
+          sender: m.sender?.role === 'customer' ? 'Customer' : 'Admin',
+          createdAt: m.sentAt,
+        })));
         setTimeout(scrollToBottom, 100);
+      } else {
+        setMessages([]);
       }
     } catch {
       // ignore
@@ -73,18 +79,9 @@ function Profile() {
     if (!chatInput.trim()) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/messages`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ content: chatInput, sender: 'Customer' })
-      });
-      if (res.ok) {
-        setChatInput('');
-        fetchMessages();
-      }
+      await messagesApi.createConversation({ firstMessage: chatInput });
+      setChatInput('');
+      fetchMessages();
     } catch {
       alert('Failed to send message');
     }
@@ -108,16 +105,8 @@ function Profile() {
       formData.append('nicNumber', form.nicNumber);
       if (avatarFile) formData.append('avatar', avatarFile);
 
-      const res = await fetch(`${API}/profile`, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Failed to update profile');
-      
-      updateUser(data.customer);
+      const data = await authApi.updateProfile(formData);
+      updateUser(data.user || data.customer);
       setSuccess('Profile updated successfully!');
       setIsEditing(false);
       setAvatarFile(null);
@@ -132,7 +121,7 @@ function Profile() {
 
   // Fallback image if no avatar
   const avatarUrl = user.avatar 
-    ? `http://localhost:5000${user.avatar}`
+    ? getApiUrl('').replace('/api', '') + user.avatar
     : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
   return (
