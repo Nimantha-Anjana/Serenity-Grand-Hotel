@@ -1,0 +1,285 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - GALLERY PAGE STYLES
+   ========================================================================== */
+
+.gallery-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+/* 1. Statistics Cards */
+.stat-card {
+  border-left: 4px solid transparent;
+  transition: var(--transition-smooth);
+}
+
+.stat-card:hover {
+  border-left-color: var(--color-gold);
+  transform: translateY(-2px);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.stat-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.stat-icon-wrapper.navy {
+  background-color: rgba(27, 42, 65, 0.1);
+  color: var(--color-navy);
+}
+
+.stat-icon-wrapper.gold {
+  background-color: var(--color-gold-soft);
+  color: var(--color-gold);
+}
+
+/* 2. Filter Inputs */
+.filter-card .form-control,
+.filter-card .form-select {
+  border-color: var(--color-border);
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+}
+
+.filter-card .form-control:focus,
+.filter-card .form-select:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.search-group .input-group-text {
+  border-color: var(--color-border);
+}
+
+/* 3. Gallery Card & Image Hover Effects */
+.gallery-card {
+  transition: var(--transition-smooth);
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.gallery-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: var(--color-navy);
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-card:hover .gallery-img {
+  transform: scale(1.08);
+}
+
+/* Hover Overlay & Action Buttons */
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(27, 42, 65, 0.7);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-card:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.btn-overlay-action {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background-color: #FFFFFF;
+  color: var(--color-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-overlay-action.view:hover {
+  background-color: var(--color-navy);
+  color: #FFFFFF;
+}
+
+.btn-overlay-action.edit:hover {
+  background-color: var(--color-gold);
+  color: #FFFFFF;
+}
+
+.btn-overlay-action.delete:hover {
+  background-color: #dc2626;
+  color: #FFFFFF;
+}
+
+.status-badge-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.25em 0.65em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 50px;
+  text-transform: capitalize;
+  z-index: 2;
+}
+
+.status-badge-overlay.published {
+  background-color: rgba(16, 185, 129, 0.9);
+  color: #FFFFFF;
+}
+
+.status-badge-overlay.draft {
+  background-color: rgba(245, 158, 11, 0.9);
+  color: #FFFFFF;
+}
+
+.badge-category {
+  font-size: 0.75rem;
+  color: var(--color-navy);
+  background-color: rgba(27, 42, 65, 0.08);
+  border: 1px solid rgba(27, 42, 65, 0.15);
+  padding: 0.25em 0.65em;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.3em 0.75em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 50px;
+}
+
+.status-badge.published {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.draft {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* 4. Pagination */
+.custom-pagination .page-link {
+  color: var(--color-navy);
+  border-color: var(--color-border);
+  font-size: 0.85rem;
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #FFFFFF;
+}
+
+/* 5. Custom Overlay Dialogs */
+.modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(27, 42, 65, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.custom-modal-dialog {
+  width: 100%;
+  max-width: 620px;
+  margin: auto;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+.custom-modal-dialog.delete-dialog {
+  max-width: 420px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content-box {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.modal-preview-img {
+  max-height: 120px;
+  object-fit: cover;
+}
+
+.modal-view-img {
+  max-height: 320px;
+  object-fit: cover;
+}
+
+.delete-icon-box {
+  width: 56px;
+  height: 56px;
+  background-color: rgba(220, 38, 38, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}

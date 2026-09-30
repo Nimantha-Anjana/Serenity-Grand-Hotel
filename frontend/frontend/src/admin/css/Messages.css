@@ -1,0 +1,193 @@
+/* Messages Page - Serenity Grand Hotel Design System */
+
+.messages-container {
+  background-color: #F8F6F1;
+  min-height: calc(100vh - 70px);
+}
+
+.messages-title {
+  color: #1B2A41;
+  font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.messages-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.text-navy,
+.font-navy {
+  color: #1B2A41 !important;
+}
+
+.bg-navy {
+  background-color: #1B2A41 !important;
+}
+
+.bg-gold {
+  background-color: #C9A227 !important;
+}
+
+.bg-cream-light {
+  background-color: #F8F6F1;
+}
+
+.btn-navy {
+  background-color: #1B2A41;
+  color: #FFFFFF;
+  border-color: #1B2A41;
+}
+
+.btn-navy:hover {
+  background-color: #121c2c;
+  color: #FFFFFF;
+}
+
+.btn-gold {
+  background-color: #C9A227;
+  color: #FFFFFF;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-gold:hover {
+  background-color: #b08d1e;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(201, 162, 39, 0.3);
+}
+
+.btn-outline-navy {
+  color: #1B2A41;
+  border-color: #1B2A41;
+  font-weight: 500;
+}
+
+.btn-outline-navy:hover {
+  background-color: #1B2A41;
+  color: #FFFFFF;
+}
+
+/* Card Container */
+.messages-card {
+  height: 78vh;
+  min-height: 550px;
+}
+
+/* Sidebar List */
+.conversation-sidebar {
+  background-color: #FFFFFF;
+}
+
+.conversation-list {
+  max-height: calc(78vh - 120px);
+}
+
+.conversation-item {
+  transition: background-color 0.2s ease;
+}
+
+.conversation-item:hover {
+  background-color: #F8F6F1;
+}
+
+.active-conversation {
+  background-color: #F1EDE4 !important;
+  border-left: 4px solid #C9A227 !important;
+}
+
+.avatar-img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+}
+
+.avatar-lg {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+}
+
+.time-text {
+  font-size: 0.72rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Filter Buttons */
+.custom-filter-pills .btn {
+  font-size: 0.78rem;
+  padding: 4px 12px;
+}
+
+/* Messages Area */
+.messages-area {
+  background-color: #F8F6F1;
+}
+
+.message-bubble {
+  max-width: 70%;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  word-wrap: break-word;
+}
+
+.message-time {
+  font-size: 0.7rem;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.icon-btn:hover {
+  background-color: #e2e6ea;
+}
+
+/* Customer Info Panel */
+.customer-info-panel {
+  width: 280px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.max-w-sm {
+  max-width: 320px;
+}
+
+/* Form Inputs Focus */
+.form-control:focus {
+  border-color: #C9A227;
+  box-shadow: 0 0 0 0.25rem rgba(201, 162, 39, 0.2);
+}

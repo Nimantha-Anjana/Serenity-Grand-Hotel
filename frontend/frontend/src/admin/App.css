@@ -1,0 +1,119 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - GLOBAL & LAYOUT STYLES
+   ========================================================================== */
+
+:root {
+  --color-navy: #1B2A41;
+  --color-navy-light: #2c3e59;
+  --color-gold: #C9A227;
+  --color-gold-hover: #b08d1f;
+  --color-gold-soft: rgba(201, 162, 39, 0.12);
+  --color-bg-light: #F8F6F1;
+  --color-card: #FFFFFF;
+  --color-text-dark: #121921;
+  --color-text-muted: #6c757d;
+  --color-border: #E8E5DF;
+  
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  --sidebar-width: 260px;
+  --topbar-height: 70px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-subtle: 0 4px 20px rgba(27, 42, 65, 0.05);
+  --shadow-hover: 0 8px 30px rgba(27, 42, 65, 0.1);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .brand-font {
+  font-family: var(--font-serif);
+  color: var(--color-navy);
+}
+
+/* Base App Layout */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Main Area Container (Topbar + Content) */
+.main-wrapper {
+  flex-grow: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+  transition: var(--transition-smooth);
+}
+
+/* Main Scrollable Content Area */
+.content-wrapper {
+  padding: 2rem;
+  flex-grow: 1;
+  background-color: var(--color-bg-light);
+}
+
+.luxury-card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-subtle);
+  transition: var(--transition-smooth);
+}
+
+.luxury-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-luxury-gold {
+  background-color: var(--color-gold);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+}
+
+.btn-luxury-gold:hover {
+  background-color: var(--color-gold-hover);
+  color: #ffffff;
+}
+
+.btn-luxury-navy {
+  background-color: var(--color-navy);
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+}
+
+.btn-luxury-navy:hover {
+  background-color: var(--color-navy-light);
+  color: #ffffff;
+}
+
+@media (max-width: 991.98px) {
+  .main-wrapper {
+    margin-left: 0;
+  }
+  .content-wrapper {
+    padding: 1.25rem;
+  }
+}

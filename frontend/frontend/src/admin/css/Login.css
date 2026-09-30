@@ -1,0 +1,199 @@
+/* ==========================================================================
+   SERENITY GRAND HOTEL - LOGIN PAGE STYLES
+   ========================================================================== */
+
+.login-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-bg-light);
+}
+
+/* 1. Left Side Hero Section */
+.login-hero-side {
+  background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: 100vh;
+}
+
+.login-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(27, 42, 65, 0.88) 0%, rgba(18, 25, 33, 0.92) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.hero-content-box {
+  color: #FFFFFF;
+  max-width: 480px;
+}
+
+.hero-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px solid var(--color-gold);
+  border-radius: 50px;
+  color: var(--color-gold);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.hero-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #FFFFFF;
+}
+
+.gold-accent-line {
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-gold);
+  border-radius: 2px;
+}
+
+.hero-subtext {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+}
+
+/* 2. Right Side Form Section */
+.login-form-side {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.form-center-box {
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.login-logo-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(201, 162, 39, 0.05));
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold);
+  font-size: 1.5rem;
+}
+
+.login-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.demo-credentials-box {
+  background-color: var(--color-bg-light);
+  border: 1px dashed var(--color-gold);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--color-navy);
+  text-align: center;
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.custom-alert {
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  padding: 0.65rem 0.85rem;
+}
+
+/* Form Inputs */
+.login-form-side .form-control {
+  border-color: var(--color-border);
+  font-size: 0.875rem;
+  padding: 0.6rem 0.85rem;
+}
+
+.login-form-side .form-control:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.login-form-side .input-group-text {
+  border-color: var(--color-border);
+  font-size: 1rem;
+}
+
+.btn-toggle-password {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.btn-toggle-password:hover {
+  background-color: var(--color-bg-light);
+  color: var(--color-navy);
+  border-color: var(--color-border);
+}
+
+.forgot-link {
+  color: var(--color-gold);
+}
+
+.forgot-link:hover {
+  color: var(--color-gold-hover);
+}
+
+/* Full Width Gold Button */
+.btn-luxury-gold-login {
+  background-color: var(--color-gold);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.925rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-luxury-gold-login:hover:not(:disabled) {
+  background-color: var(--color-gold-hover);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+}
+
+.btn-luxury-gold-login:disabled {
+  opacity: 0.75;
+}
+
+.extra-small {
+  font-size: 0.75rem;
+}
+
+/* Responsive Handling */
+@media (max-width: 991.98px) {
+  .login-wrapper {
+    overflow-y: auto;
+  }
+  .login-form-side {
+    height: auto;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+  }
+}

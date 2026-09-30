@@ -1,0 +1,388 @@
+/* Color Palette Variables */
+:root {
+  --dining-primary-navy: #1B2A41;
+  --dining-gold-accent: #C9A227;
+  --dining-white: #FFFFFF;
+  --dining-cream: #F8F6F1;
+  --dining-dark-text: #222222;
+  --dining-muted: #666666;
+  --dining-card-bg: #FFFFFF;
+}
+
+/* Page Base */
+.dining-page {
+  width: 100%;
+  background-color: var(--dining-cream);
+  color: var(--dining-dark-text);
+}
+
+.dining-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Section Typography */
+.section-small-label {
+  color: var(--dining-gold-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  color: var(--dining-primary-navy);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.gold-divider {
+  width: 60px;
+  height: 3px;
+  background-color: var(--dining-gold-accent);
+  margin: 0 auto 1.5rem auto;
+}
+
+.section-description {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--dining-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* 1. HERO SECTION */
+.dining-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--dining-white);
+}
+
+.dining-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 42, 65, 0.65);
+}
+
+.dining-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 1.5rem;
+}
+
+.dining-hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.dining-hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  color: var(--dining-cream);
+}
+
+/* 2. INTRODUCTION SECTION */
+.dining-intro {
+  background-color: var(--dining-white);
+}
+
+/* 3. RESTAURANTS SECTION */
+.dining-restaurants {
+  background-color: var(--dining-cream);
+}
+
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.restaurant-card {
+  background-color: var(--dining-card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.restaurant-image-wrapper {
+  height: 240px;
+  overflow: hidden;
+}
+
+.restaurant-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.restaurant-card:hover .restaurant-image {
+  transform: scale(1.06);
+}
+
+.restaurant-info {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.restaurant-name {
+  color: var(--dining-primary-navy);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.restaurant-desc {
+  color: var(--dining-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  flex-grow: 1;
+}
+
+.restaurant-hours {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--dining-gold-accent);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-menu {
+  background-color: transparent;
+  color: var(--dining-primary-navy);
+  border: 2px solid var(--dining-primary-navy);
+  padding: 0.7rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-menu:hover {
+  background-color: var(--dining-primary-navy);
+  color: var(--dining-white);
+}
+
+/* 4. MEAL EXPERIENCE SECTION */
+.meal-experiences {
+  background-color: var(--dining-white);
+}
+
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.meal-card {
+  background-color: var(--dining-cream);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.meal-image-wrapper {
+  height: 200px;
+}
+
+.meal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.meal-card-content {
+  padding: 1.5rem;
+}
+
+.meal-time {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--dining-gold-accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.meal-title {
+  color: var(--dining-primary-navy);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0.4rem 0 0.8rem 0;
+}
+
+.meal-desc {
+  color: var(--dining-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* 5. FOOD GALLERY SECTION */
+.dining-gallery {
+  background-color: var(--dining-cream);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.gallery-item {
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.08);
+}
+
+/* 6. SPECIAL DINING CTA */
+.dining-cta {
+  position: relative;
+  padding: 6rem 2rem;
+  background: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  text-align: center;
+  color: var(--dining-white);
+}
+
+.dining-cta-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 42, 65, 0.82);
+}
+
+.dining-cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.cta-text {
+  font-size: 1.15rem;
+  color: var(--dining-cream);
+  margin-bottom: 2rem;
+}
+
+.btn-cta-gold {
+  background-color: var(--dining-gold-accent);
+  color: var(--dining-white);
+  padding: 0.9rem 2.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-cta-gold:hover {
+  background-color: #b08d1f;
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+
+/* Tablet Screens */
+@media (max-width: 992px) {
+  .restaurants-grid,
+  .meal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dining-hero-title {
+    font-size: 2.8rem;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 600px) {
+  .dining-container {
+    padding: 3.5rem 1.2rem;
+  }
+
+  .dining-hero {
+    height: 50vh;
+  }
+
+  .dining-hero-title {
+    font-size: 2.2rem;
+  }
+
+  .dining-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .restaurants-grid,
+  .meal-grid,
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-title {
+    font-size: 1.8rem;
+  }
+}
