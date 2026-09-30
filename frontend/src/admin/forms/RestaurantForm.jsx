@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdminData } from '../context/adminDataContext';
 import FormPageLayout, { RecordNotFound } from './FormPageLayout';
+import { validateRestaurantForm, showSuccessAlert } from '../components/ValidationAlerts';
 import '../css/Dining.css';
 
 const LIST_PATH = '/admin/dining';
@@ -38,10 +39,16 @@ export default function RestaurantForm() {
 
   const handleSave = (e) => {
     e.preventDefault();
+
+    // Central Validation Check
+    if (!validateRestaurantForm(record)) return;
+
     if (isEdit) {
       setRestaurants((prev) => prev.map((x) => (x.id === record.id ? record : x)));
+      showSuccessAlert('Success!', 'Restaurant updated successfully.');
     } else {
       setRestaurants((prev) => [...prev, { ...record, id: Date.now() }]);
+      showSuccessAlert('Success!', 'Restaurant added successfully.');
     }
     goBack();
   };
@@ -55,51 +62,57 @@ export default function RestaurantForm() {
       backLabel="Back to Dining"
       maxWidth={800}
     >
-      <form onSubmit={handleSave} className="form-page-form">
+      <form onSubmit={handleSave} className="form-page-form" noValidate>
         <div className="row g-3 mb-3">
+          
+          {/* Restaurant Name */}
           <div className="col-12">
-            <label className="form-label fs-7 fw-semibold">Restaurant Name</label>
+            <label className="form-label fs-7 fw-semibold">Restaurant Name *</label>
             <input
               type="text"
               className="form-control luxury-select"
-              required
               value={record.name}
               onChange={e => setRecord({ ...record, name: e.target.value })}
             />
           </div>
+
+          {/* Cuisine Type */}
           <div className="col-12 col-md-6">
-            <label className="form-label fs-7 fw-semibold">Cuisine Type</label>
+            <label className="form-label fs-7 fw-semibold">Cuisine Type *</label>
             <input
               type="text"
               className="form-control luxury-select"
-              required
               placeholder="e.g. Italian Fine Dining"
               value={record.cuisine}
               onChange={e => setRecord({ ...record, cuisine: e.target.value })}
             />
           </div>
+
+          {/* Opening Hours */}
           <div className="col-12 col-md-6">
-            <label className="form-label fs-7 fw-semibold">Opening Hours</label>
+            <label className="form-label fs-7 fw-semibold">Opening Hours *</label>
             <input
               type="text"
               className="form-control luxury-select"
-              required
               placeholder="e.g. 08:00 AM - 10:00 PM"
               value={record.hours}
               onChange={e => setRecord({ ...record, hours: e.target.value })}
             />
           </div>
+
+          {/* Location / Floor */}
           <div className="col-12 col-md-8">
-            <label className="form-label fs-7 fw-semibold">Location / Floor</label>
+            <label className="form-label fs-7 fw-semibold">Location / Floor *</label>
             <input
               type="text"
               className="form-control luxury-select"
-              required
               placeholder="e.g. East Wing, 2nd Floor"
               value={record.location}
               onChange={e => setRecord({ ...record, location: e.target.value })}
             />
           </div>
+
+          {/* Status */}
           <div className="col-12 col-md-4">
             <label className="form-label fs-7 fw-semibold">Status</label>
             <select
@@ -111,6 +124,8 @@ export default function RestaurantForm() {
               <option value="Closed">Closed</option>
             </select>
           </div>
+
+          {/* Image URL */}
           <div className="col-12">
             <label className="form-label fs-7 fw-semibold">Image URL</label>
             <input
@@ -120,8 +135,10 @@ export default function RestaurantForm() {
               onChange={e => setRecord({ ...record, image: e.target.value })}
             />
           </div>
+
         </div>
 
+        {/* Buttons */}
         <div className="d-flex justify-content-end gap-2 pt-3 border-top">
           <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={goBack}>
             <i className="bi bi-x-circle"></i> Cancel

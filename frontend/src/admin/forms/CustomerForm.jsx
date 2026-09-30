@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdminData } from '../context/adminDataContext';
 import FormPageLayout, { RecordNotFound } from './FormPageLayout';
+import { validateCustomerForm, showSuccessAlert } from '../components/ValidationAlerts';
 import '../css/Customers.css';
 
 const LIST_PATH = '/admin/customers';
@@ -19,11 +20,6 @@ const createEmptyCustomer = () => ({
   recentBookings: []
 });
 
-/**
- * Add / Edit Customer form page.
- *   /admin/customers/add        -> new customer
- *   /admin/customers/edit/:id   -> edit existing customer
- */
 export default function CustomerForm() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -42,10 +38,16 @@ export default function CustomerForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Centralized Validation Check
+    if (!validateCustomerForm(customer)) return;
+
     if (isEdit) {
       setCustomers((prev) => prev.map((c) => (c.id === customer.id ? customer : c)));
+      showSuccessAlert('Success!', 'Customer updated successfully.');
     } else {
       setCustomers((prev) => [{ ...customer, id: Date.now() }, ...prev]);
+      showSuccessAlert('Success!', 'Customer created successfully.');
     }
     goBack();
   };
@@ -57,201 +59,116 @@ export default function CustomerForm() {
       icon={isEdit ? 'bi-pencil-square' : 'bi-person-plus-fill'}
       backTo={LIST_PATH}
       backLabel="Back to Customers"
-      maxWidth={800}
     >
-      {isEdit ? (
-        <form onSubmit={handleSubmit} className="form-page-form">
-          <div className="row g-3 mb-3">
-            <div className="col-12">
-              <label className="form-label fs-7 fw-semibold">Full Name</label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  required
-                  value={customer.name}
-                  onChange={e => setCustomer({ ...customer, name: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Email Address</label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
-                <input
-                  type="email"
-                  className="form-control luxury-select"
-                  required
-                  value={customer.email}
-                  onChange={e => setCustomer({ ...customer, email: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Phone Number</label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  required
-                  value={customer.phone}
-                  onChange={e => setCustomer({ ...customer, phone: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label className="form-label fs-7 fw-semibold">Address</label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  value={customer.address}
-                  onChange={e => setCustomer({ ...customer, address: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Status</label>
-              <select
-                className="form-select luxury-select"
-                value={customer.status}
-                onChange={e => setCustomer({ ...customer, status: e.target.value })}
-              >
-                <option value="New">New</option>
-                <option value="Returning">Returning</option>
-                <option value="Active">Active</option>
-              </select>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Registration Date</label>
+      <form id="customerForm" onSubmit={handleSubmit} className="form-page-form" noValidate>
+        <div className="row g-3 mb-4">
+          <div className="col-12 col-md-6">
+            <label htmlFor="customerName" className="form-label fs-7 fw-semibold">
+              Full Name *
+            </label>
+            <div className="input-group">
+              <span className="input-group-text bg-light"><i className="bi bi-person"></i></span>
               <input
-                type="date"
-                className="form-control luxury-select"
-                value={customer.regDate}
-                onChange={e => setCustomer({ ...customer, regDate: e.target.value })}
+                type="text"
+                id="customerName"
+                name="name"
+                className="form-control"
+                placeholder="e.g. John Doe"
+                value={customer.name}
+                onChange={e => setCustomer({ ...customer, name: e.target.value })}
               />
             </div>
           </div>
 
-          <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-            <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={goBack}>
-              <i className="bi bi-x-lg"></i> Cancel
-            </button>
-            <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
-              <i className="bi bi-save-fill"></i> Save Changes
-            </button>
-          </div>
-        </form>
-      ) : (
-        <form onSubmit={handleSubmit} className="form-page-form">
-          <div className="row g-3 mb-3">
-            <div className="col-12">
-              <label className="form-label fs-7 fw-semibold">
-                Full Name <span className="text-danger">*</span>
-              </label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  placeholder="e.g. John Doe"
-                  required
-                  value={customer.name}
-                  onChange={e => setCustomer({ ...customer, name: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">
-                Email Address <span className="text-danger">*</span>
-              </label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
-                <input
-                  type="email"
-                  className="form-control luxury-select"
-                  placeholder="name@example.com"
-                  required
-                  value={customer.email}
-                  onChange={e => setCustomer({ ...customer, email: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">
-                Phone Number <span className="text-danger">*</span>
-              </label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  placeholder="+1 234 567 890"
-                  required
-                  value={customer.phone}
-                  onChange={e => setCustomer({ ...customer, phone: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-12">
-              <label className="form-label fs-7 fw-semibold">Address</label>
-              <div className="input-group">
-                <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
-                <input
-                  type="text"
-                  className="form-control luxury-select"
-                  placeholder="Street address, City, Country"
-                  value={customer.address}
-                  onChange={e => setCustomer({ ...customer, address: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Status</label>
-              <select
-                className="form-select luxury-select"
-                value={customer.status}
-                onChange={e => setCustomer({ ...customer, status: e.target.value })}
-              >
-                <option value="New">New</option>
-                <option value="Returning">Returning</option>
-                <option value="Active">Active</option>
-              </select>
-            </div>
-
-            <div className="col-6">
-              <label className="form-label fs-7 fw-semibold">Registration Date</label>
+          <div className="col-12 col-md-6">
+            <label htmlFor="customerEmail" className="form-label fs-7 fw-semibold">
+              Email Address *
+            </label>
+            <div className="input-group">
+              <span className="input-group-text bg-light"><i className="bi bi-envelope"></i></span>
               <input
-                type="date"
-                className="form-control luxury-select"
-                value={customer.regDate}
-                onChange={e => setCustomer({ ...customer, regDate: e.target.value })}
+                type="email"
+                id="customerEmail"
+                name="email"
+                className="form-control"
+                placeholder="name@example.com"
+                value={customer.email}
+                onChange={e => setCustomer({ ...customer, email: e.target.value })}
               />
             </div>
           </div>
 
-          <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-            <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={goBack}>
-              <i className="bi bi-x-lg"></i> Cancel
-            </button>
-            <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
-              <i className="bi bi-check-lg"></i> Create Customer
-            </button>
+          <div className="col-12 col-md-6">
+            <label htmlFor="customerPhone" className="form-label fs-7 fw-semibold">
+              Phone Number *
+            </label>
+            <div className="input-group">
+              <span className="input-group-text bg-light"><i className="bi bi-telephone"></i></span>
+              <input
+                type="text"
+                id="customerPhone"
+                name="phone"
+                className="form-control"
+                placeholder="+1 234 567 890"
+                value={customer.phone}
+                onChange={e => setCustomer({ ...customer, phone: e.target.value })}
+              />
+            </div>
           </div>
-        </form>
-      )}
+
+          <div className="col-12 col-md-6">
+            <label htmlFor="customerRegDate" className="form-label fs-7 fw-semibold">Registration Date</label>
+            <input
+              type="date"
+              id="customerRegDate"
+              name="regDate"
+              className="form-control"
+              value={customer.regDate}
+              onChange={e => setCustomer({ ...customer, regDate: e.target.value })}
+            />
+          </div>
+
+          <div className="col-12 col-md-8">
+            <label htmlFor="customerAddress" className="form-label fs-7 fw-semibold">Address</label>
+            <div className="input-group">
+              <span className="input-group-text bg-light"><i className="bi bi-geo-alt"></i></span>
+              <input
+                type="text"
+                id="customerAddress"
+                name="address"
+                className="form-control"
+                placeholder="Street address, City, Country"
+                value={customer.address}
+                onChange={e => setCustomer({ ...customer, address: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div className="col-12 col-md-4">
+            <label htmlFor="customerStatus" className="form-label fs-7 fw-semibold">Status</label>
+            <select
+              id="customerStatus"
+              name="status"
+              className="form-select"
+              value={customer.status}
+              onChange={e => setCustomer({ ...customer, status: e.target.value })}
+            >
+              <option value="New">New</option>
+              <option value="Returning">Returning</option>
+              <option value="Active">Active</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-end gap-2 pt-3 border-top">
+          <button type="button" id="btnCustomerCancel" className="btn btn-secondary px-4" onClick={goBack}>
+            Cancel
+          </button>
+          <button type="submit" id="btnCustomerSubmit" className="btn btn-luxury-gold px-4">
+            {isEdit ? 'Save Changes' : 'Create Customer'}
+          </button>
+        </div>
+      </form>
     </FormPageLayout>
   );
 }
