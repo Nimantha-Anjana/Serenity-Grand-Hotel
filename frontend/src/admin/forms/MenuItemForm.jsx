@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdminData } from '../context/adminDataContext';
 import FormPageLayout, { RecordNotFound } from './FormPageLayout';
+import { validateMenuItemForm, showSuccessAlert } from '../components/ValidationAlerts';
 import '../css/Dining.css';
 
 const LIST_PATH = '/admin/dining';
@@ -38,10 +39,16 @@ export default function MenuItemForm() {
 
   const handleSave = (e) => {
     e.preventDefault();
+
+    // Central Validation Check
+    if (!validateMenuItemForm(record)) return;
+
     if (isEdit) {
       setMenuItems((prev) => prev.map((x) => (x.id === record.id ? record : x)));
+      showSuccessAlert('Success!', 'Menu item updated successfully.');
     } else {
       setMenuItems((prev) => [...prev, { ...record, id: Date.now() }]);
+      showSuccessAlert('Success!', 'Menu item added successfully.');
     }
     goBack();
   };
@@ -55,24 +62,22 @@ export default function MenuItemForm() {
       backLabel="Back to Dining"
       maxWidth={800}
     >
-      <form onSubmit={handleSave} className="form-page-form">
+      <form onSubmit={handleSave} className="form-page-form" noValidate>
         <div className="row g-3 mb-3">
           <div className="col-12 col-md-8">
-            <label className="form-label fs-7 fw-semibold">Item Name</label>
+            <label className="form-label fs-7 fw-semibold">Item Name *</label>
             <input
               type="text"
               className="form-control luxury-select"
-              required
               value={record.name}
               onChange={e => setRecord({ ...record, name: e.target.value })}
             />
           </div>
           <div className="col-12 col-md-4">
-            <label className="form-label fs-7 fw-semibold">Price ($)</label>
+            <label className="form-label fs-7 fw-semibold">Price ($) *</label>
             <input
               type="number"
               className="form-control luxury-select"
-              required
               value={record.price}
               onChange={e => setRecord({ ...record, price: e.target.value })}
             />

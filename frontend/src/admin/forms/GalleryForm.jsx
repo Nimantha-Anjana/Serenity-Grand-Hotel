@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdminData } from '../context/adminDataContext';
 import FormPageLayout, { RecordNotFound } from './FormPageLayout';
+import { validateGalleryForm, showSuccessAlert } from '../components/ValidationAlerts';
 import '../css/Gallery.css';
 
 const LIST_PATH = '/admin/gallery';
@@ -47,6 +48,10 @@ export default function GalleryForm() {
 
   const handleSaveImage = (e) => {
     e.preventDefault();
+
+    // Central Validation Check
+    if (!validateGalleryForm(formData)) return;
+
     if (!isEdit) {
       const newImg = {
         id: Date.now(),
@@ -54,8 +59,10 @@ export default function GalleryForm() {
         uploadDate: new Date().toISOString().split('T')[0]
       };
       setImages([newImg, ...images]);
+      showSuccessAlert('Success!', 'Gallery image added successfully.');
     } else {
       setImages(images.map((img) => (img.id === image.id ? { ...img, ...formData } : img)));
+      showSuccessAlert('Success!', 'Gallery image updated successfully.');
     }
     goBack();
   };
@@ -69,14 +76,13 @@ export default function GalleryForm() {
       backLabel="Back to Gallery"
       maxWidth={800}
     >
-      <form onSubmit={handleSaveImage} className="form-page-form">
+      <form onSubmit={handleSaveImage} className="form-page-form" noValidate>
         <div className="row g-3">
           <div className="col-12">
-            <label className="form-label small fw-semibold">Image Title</label>
+            <label className="form-label small fw-semibold">Image Title *</label>
             <input
               type="text"
               className="form-control"
-              required
               placeholder="e.g. Presidential Suite Bedroom"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -109,7 +115,7 @@ export default function GalleryForm() {
             </select>
           </div>
           <div className="col-12 col-md-6">
-            <label className="form-label small fw-semibold">Image URL / Select</label>
+            <label className="form-label small fw-semibold">Image URL *</label>
             <input
               type="text"
               className="form-control"
