@@ -27,6 +27,20 @@ import Facilities from './pages/Facilities';
 import Messages from './pages/Messages';
 import Activities from './pages/Activities';
 
+// Form Pages (Add / Edit forms - each one is its own page, opened from the list page buttons)
+import RoomForm from './forms/RoomForm';
+import ActivityForm from './forms/ActivityForm';
+import BookingForm from './forms/BookingForm';
+import CustomerForm from './forms/CustomerForm';
+import RestaurantForm from './forms/RestaurantForm';
+import MenuItemForm from './forms/MenuItemForm';
+import FacilityForm from './forms/FacilityForm';
+import GalleryForm from './forms/GalleryForm';
+import ServiceForm from './forms/ServiceForm';
+
+// Shared dummy data so list pages and form pages see the same records
+import AdminDataProvider from './context/AdminDataProvider';
+
 
 
 /* ==========================================================================
@@ -75,6 +89,7 @@ const AdminLayout = () => {
    ========================================================================== */
 function AdminApp() {
   return (
+    <AdminDataProvider>
     <Routes>
       {/* Standalone Login Route (Sidebar සහ Topbar රහිතව දිස් වේ) */}
       <Route path="login" element={<Login />} />
@@ -94,10 +109,37 @@ function AdminApp() {
         <Route path="profile" element={<Profile />} />
         <Route path="activities" element={<Activities />} />
 
+        {/* ---------- Form pages (Add / Edit) ---------- */}
+        <Route path="rooms/add" element={<RoomForm />} />
+        <Route path="rooms/edit/:id" element={<RoomForm />} />
+
+        <Route path="bookings/add" element={<BookingForm />} />
+
+        <Route path="customers/add" element={<CustomerForm />} />
+        <Route path="customers/edit/:id" element={<CustomerForm />} />
+
+        <Route path="dining/restaurants/add" element={<RestaurantForm />} />
+        <Route path="dining/restaurants/edit/:id" element={<RestaurantForm />} />
+        <Route path="dining/menu/add" element={<MenuItemForm />} />
+        <Route path="dining/menu/edit/:id" element={<MenuItemForm />} />
+
+        <Route path="activities/add" element={<ActivityForm />} />
+        <Route path="activities/edit/:id" element={<ActivityForm />} />
+
+        <Route path="facilities/add" element={<FacilityForm />} />
+        <Route path="facilities/edit/:id" element={<FacilityForm />} />
+
+        <Route path="gallery/add" element={<GalleryForm />} />
+        <Route path="gallery/edit/:id" element={<GalleryForm />} />
+
+        <Route path="services/add" element={<ServiceForm />} />
+        <Route path="services/edit/:id" element={<ServiceForm />} />
+
         {/* Unknown /admin/... URL -> Dashboard */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Route>
     </Routes>
+    </AdminDataProvider>
   );
 }
 

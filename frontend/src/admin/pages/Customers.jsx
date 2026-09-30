@@ -1,123 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAdminData } from '../context/adminDataContext';
 import '../css/Customers.css';
 
-const INITIAL_CUSTOMERS = [
-  {
-    id: 1,
-    name: 'Lady Eleanor Vance',
-    email: 'e.vance@royalnet.co.uk',
-    phone: '+44 20 7946 0912',
-    address: '45 Kensington Palace Gardens, London, UK',
-    regDate: '2024-03-15',
-    totalBookings: 12,
-    lastVisit: '2026-10-12',
-    status: 'Returning',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1092', room: 'Royal Penthouse Suite', date: '2026-10-12', amount: '$14,700' },
-      { id: 'SGH-0980', room: 'Presidential Ocean Suite', date: '2026-05-20', amount: '$11,400' }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Lord Harrison Ford',
-    email: 'harrison.f@skydance.com',
-    phone: '+1 310 555 0199',
-    address: '10200 Sunset Blvd, Los Angeles, CA, USA',
-    regDate: '2026-09-01',
-    totalBookings: 1,
-    lastVisit: '2026-10-14',
-    status: 'New',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1093', room: 'Presidential Ocean Suite', date: '2026-10-14', amount: '$11,400' }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Dr. Sophia Sterling',
-    email: 's.sterling@cambridge.edu',
-    phone: '+44 1223 337799',
-    address: '12 Trinity Street, Cambridge, UK',
-    regDate: '2025-01-10',
-    totalBookings: 6,
-    lastVisit: '2026-10-10',
-    status: 'Active',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1094', room: 'Grand Deluxe Ocean View', date: '2026-10-10', amount: '$3,250' }
-    ]
-  },
-  {
-    id: 4,
-    name: 'Alexander Wright',
-    email: 'awright@capitalventures.com',
-    phone: '+1 212 555 0148',
-    address: '740 Park Avenue, New York, NY, USA',
-    regDate: '2023-11-20',
-    totalBookings: 18,
-    lastVisit: '2026-10-01',
-    status: 'Returning',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1095', room: 'Executive Garden Villa', date: '2026-10-01', amount: '$9,500' }
-    ]
-  },
-  {
-    id: 5,
-    name: 'Camilla Rothschild',
-    email: 'camilla@rothschild-art.fr',
-    phone: '+33 1 42 68 55 00',
-    address: '18 Avenue Montaigne, Paris, France',
-    regDate: '2026-08-14',
-    totalBookings: 2,
-    lastVisit: '2026-10-25',
-    status: 'New',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1096', room: 'Serenity Diplomatic Suite', date: '2026-10-25', amount: '$6,200' }
-    ]
-  },
-  {
-    id: 6,
-    name: 'Viktor Morozov',
-    email: 'v.morozov@investcorp.ch',
-    phone: '+41 22 819 3000',
-    address: 'Rue du Rhône 42, Geneva, Switzerland',
-    regDate: '2025-06-05',
-    totalBookings: 4,
-    lastVisit: '2026-11-02',
-    status: 'Active',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&auto=format&fit=crop&q=80',
-    recentBookings: [
-      { id: 'SGH-1097', room: 'Presidential Ocean Suite', date: '2026-11-02', amount: '$11,400' }
-    ]
-  }
-];
 
-const INITIAL_FORM_STATE = {
-  name: '',
-  email: '',
-  phone: '',
-  address: '',
-  status: 'New',
-  regDate: new Date().toISOString().split('T')[0],
-  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
-  totalBookings: 0,
-  lastVisit: '-',
-  recentBookings: []
-};
 
 export default function Customers() {
-  const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
+  const { customers, setCustomers } = useAdminData();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [regDateFilter, setRegDateFilter] = useState('');
 
   // Modals state
   const [viewCustomer, setViewCustomer] = useState(null);
-  const [addCustomer, setAddCustomer] = useState(null);
-  const [editCustomer, setEditCustomer] = useState(null);
   const [deleteCustomer, setDeleteCustomer] = useState(null);
 
   // Filter Logic
@@ -140,24 +36,6 @@ export default function Customers() {
   const activeCount = customers.filter(c => c.status === 'Active').length;
 
   // Handlers
-  const handleAddSubmit = (e) => {
-    e.preventDefault();
-    const newEntry = {
-      ...addCustomer,
-      id: Date.now()
-    };
-    setCustomers(prev => [newEntry, ...prev]);
-    setAddCustomer(null);
-  };
-
-  const handleEditSave = (e) => {
-    e.preventDefault();
-    setCustomers(prev =>
-      prev.map(c => (c.id === editCustomer.id ? editCustomer : c))
-    );
-    setEditCustomer(null);
-  };
-
   const handleDeleteConfirm = () => {
     setCustomers(prev => prev.filter(c => c.id !== deleteCustomer.id));
     setDeleteCustomer(null);
@@ -186,7 +64,7 @@ export default function Customers() {
         </div>
         <button 
           className="btn btn-luxury-gold mt-3 mt-md-0 d-flex align-items-center gap-2 px-3 py-2"
-          onClick={() => setAddCustomer({ ...INITIAL_FORM_STATE })}
+          onClick={() => navigate('/admin/customers/add')}
         >
           <i className="bi bi-person-plus-fill fs-6"></i>
           <span>Add New Customer</span>
@@ -351,7 +229,7 @@ export default function Customers() {
                         <button
                           className="btn btn-action btn-outline-warning text-dark rounded-circle"
                           title="Edit Customer"
-                          onClick={() => setEditCustomer({ ...c })}
+                          onClick={() => navigate(`/admin/customers/edit/${c.id}`)}
                         >
                           <i className="bi bi-pencil-square"></i>
                         </button>
@@ -497,228 +375,6 @@ export default function Customers() {
                 <i className="bi bi-x-circle"></i> Close
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 6. Add New Customer Modal */}
-      {addCustomer && (
-        <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
-          <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
-            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-              <h2 className="h4 mb-0 text-primary-navy d-flex align-items-center gap-2">
-                <i className="bi bi-person-plus-fill text-gold"></i>
-                <span>Add New Customer</span>
-              </h2>
-              <button type="button" className="btn-close" onClick={() => setAddCustomer(null)}></button>
-            </div>
-
-            <form onSubmit={handleAddSubmit}>
-              <div className="row g-3 mb-3">
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">
-                    Full Name <span className="text-danger">*</span>
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      placeholder="e.g. John Doe"
-                      required
-                      value={addCustomer.name}
-                      onChange={e => setAddCustomer({ ...addCustomer, name: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">
-                    Email Address <span className="text-danger">*</span>
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
-                    <input
-                      type="email"
-                      className="form-control luxury-select"
-                      placeholder="name@example.com"
-                      required
-                      value={addCustomer.email}
-                      onChange={e => setAddCustomer({ ...addCustomer, email: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">
-                    Phone Number <span className="text-danger">*</span>
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      placeholder="+1 234 567 890"
-                      required
-                      value={addCustomer.phone}
-                      onChange={e => setAddCustomer({ ...addCustomer, phone: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Address</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      placeholder="Street address, City, Country"
-                      value={addCustomer.address}
-                      onChange={e => setAddCustomer({ ...addCustomer, address: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Status</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={addCustomer.status}
-                    onChange={e => setAddCustomer({ ...addCustomer, status: e.target.value })}
-                  >
-                    <option value="New">New</option>
-                    <option value="Returning">Returning</option>
-                    <option value="Active">Active</option>
-                  </select>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Registration Date</label>
-                  <input
-                    type="date"
-                    className="form-control luxury-select"
-                    value={addCustomer.regDate}
-                    onChange={e => setAddCustomer({ ...addCustomer, regDate: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setAddCustomer(null)}>
-                  <i className="bi bi-x-lg"></i> Cancel
-                </button>
-                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
-                  <i className="bi bi-check-lg"></i> Create Customer
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* 7. Edit Customer Modal */}
-      {editCustomer && (
-        <div className="modal-backdrop-custom d-flex align-items-center justify-content-center">
-          <div className="card card-luxury modal-content-custom border-0 p-4 shadow-lg">
-            <div className="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
-              <h2 className="h4 mb-0 text-primary-navy d-flex align-items-center gap-2">
-                <i className="bi bi-pencil-square text-gold"></i>
-                <span>Edit Customer Profile</span>
-              </h2>
-              <button type="button" className="btn-close" onClick={() => setEditCustomer(null)}></button>
-            </div>
-
-            <form onSubmit={handleEditSave}>
-              <div className="row g-3 mb-3">
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Full Name</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-person"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      value={editCustomer.name}
-                      onChange={e => setEditCustomer({ ...editCustomer, name: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Email Address</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-envelope"></i></span>
-                    <input
-                      type="email"
-                      className="form-control luxury-select"
-                      required
-                      value={editCustomer.email}
-                      onChange={e => setEditCustomer({ ...editCustomer, email: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Phone Number</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-telephone"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      required
-                      value={editCustomer.phone}
-                      onChange={e => setEditCustomer({ ...editCustomer, phone: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-12">
-                  <label className="form-label fs-7 fw-semibold">Address</label>
-                  <div className="input-group">
-                    <span className="input-group-text bg-light text-muted"><i className="bi bi-geo-alt"></i></span>
-                    <input
-                      type="text"
-                      className="form-control luxury-select"
-                      value={editCustomer.address}
-                      onChange={e => setEditCustomer({ ...editCustomer, address: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Status</label>
-                  <select
-                    className="form-select luxury-select"
-                    value={editCustomer.status}
-                    onChange={e => setEditCustomer({ ...editCustomer, status: e.target.value })}
-                  >
-                    <option value="New">New</option>
-                    <option value="Returning">Returning</option>
-                    <option value="Active">Active</option>
-                  </select>
-                </div>
-
-                <div className="col-6">
-                  <label className="form-label fs-7 fw-semibold">Registration Date</label>
-                  <input
-                    type="date"
-                    className="form-control luxury-select"
-                    value={editCustomer.regDate}
-                    onChange={e => setEditCustomer({ ...editCustomer, regDate: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-end gap-2 pt-3 border-top">
-                <button type="button" className="btn btn-secondary d-flex align-items-center gap-1" onClick={() => setEditCustomer(null)}>
-                  <i className="bi bi-x-lg"></i> Cancel
-                </button>
-                <button type="submit" className="btn btn-luxury-gold d-flex align-items-center gap-1">
-                  <i className="bi bi-save-fill"></i> Save Changes
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}

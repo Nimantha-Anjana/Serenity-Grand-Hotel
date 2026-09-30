@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAdminData } from '../context/adminDataContext';
 import '../css/Gallery.css';
 
 /**
@@ -8,112 +10,19 @@ import '../css/Gallery.css';
  */
 const Gallery = () => {
   // Static Dummy Gallery Dataset
-  const initialImages = [
-    {
-      id: 1,
-      title: 'Grand Hotel Exterior',
-      category: 'Hotel',
-      status: 'Published',
-      uploadDate: '2026-02-10',
-      description: 'Stunning night view of the main resort facade illuminated by warm architectural lighting.',
-      url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 1
-    },
-    {
-      id: 2,
-      title: 'Luxury Lobby Salon',
-      category: 'Hotel',
-      status: 'Published',
-      uploadDate: '2026-02-12',
-      description: 'Double-height grand entrance hall featuring marble floors and custom gold chandelier.',
-      url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 2
-    },
-    {
-      id: 3,
-      title: 'Presidential Ocean Suite',
-      category: 'Rooms',
-      status: 'Published',
-      uploadDate: '2026-02-14',
-      description: 'Master suite with private oceanfront balcony and floor-to-ceiling panoramic glass.',
-      url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 3
-    },
-    {
-      id: 4,
-      title: 'Ocean View Restaurant',
-      category: 'Dining',
-      status: 'Published',
-      uploadDate: '2026-02-15',
-      description: 'Michelin-starred fine dining setup facing the ocean during golden sunset hours.',
-      url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 4
-    },
-    {
-      id: 5,
-      title: 'Infinity Swimming Pool',
-      category: 'Facilities',
-      status: 'Published',
-      uploadDate: '2026-02-18',
-      description: 'Temperature-controlled rooftop pool seamlessly blending into the ocean horizon.',
-      url: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 5
-    },
-    {
-      id: 6,
-      title: 'Royal Spa & Wellness',
-      category: 'Facilities',
-      status: 'Published',
-      uploadDate: '2026-02-20',
-      description: 'Tranquil aromatherapy treatment room with natural stone and bamboo aesthetics.',
-      url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 6
-    },
-    {
-      id: 7,
-      title: 'Grand Ballroom Wedding',
-      category: 'Events',
-      status: 'Draft',
-      uploadDate: '2026-02-22',
-      description: 'Extravagant floral arrangement and banquet setting for luxury wedding receptions.',
-      url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 7
-    },
-    {
-      id: 8,
-      title: 'Sunset Lounge Bar',
-      category: 'Dining',
-      status: 'Published',
-      uploadDate: '2026-02-25',
-      description: 'Open-air cocktail bar featuring signature mixology and plush outdoor cabanas.',
-      url: 'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=600&q=80',
-      displayOrder: 8
-    }
-  ];
 
   // States
-  const [images, setImages] = useState(initialImages);
+  const { images, setImages } = useAdminData();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('');
 
   // Modals state management
-  const [showAddEditModal, setShowAddEditModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState(null);
-  const [modalMode, setModalMode] = useState('add'); // 'add' | 'edit'
-
-  // Form State
-  const [formData, setFormData] = useState({
-    title: '',
-    category: 'Hotel',
-    status: 'Published',
-    description: '',
-    url: '',
-    displayOrder: 1
-  });
 
   // Calculate Statistics
   const totalImages = images.length;
@@ -136,34 +45,7 @@ const Gallery = () => {
     setStatusFilter('');
   };
 
-  // Modal Handlers
-  const openAddModal = () => {
-    setModalMode('add');
-    setFormData({
-      title: '',
-      category: 'Hotel',
-      status: 'Published',
-      description: '',
-      url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80',
-      displayOrder: images.length + 1
-    });
-    setShowAddEditModal(true);
-  };
-
-  const openEditModal = (img) => {
-    setModalMode('edit');
-    setSelectedImage(img);
-    setFormData({
-      title: img.title,
-      category: img.category,
-      status: img.status,
-      description: img.description,
-      url: img.url,
-      displayOrder: img.displayOrder
-    });
-    setShowAddEditModal(true);
-  };
-
+  // Modal Handlers (add + edit now live on their own form pages)
   const openViewModal = (img) => {
     setSelectedImage(img);
     setShowViewModal(true);
@@ -172,26 +54,6 @@ const Gallery = () => {
   const openDeleteModal = (img) => {
     setSelectedImage(img);
     setShowDeleteModal(true);
-  };
-
-  // Static Form Submissions
-  const handleSaveImage = (e) => {
-    e.preventDefault();
-    if (modalMode === 'add') {
-      const newImg = {
-        id: Date.now(),
-        ...formData,
-        uploadDate: new Date().toISOString().split('T')[0]
-      };
-      setImages([newImg, ...images]);
-    } else {
-      setImages(
-        images.map((img) =>
-          img.id === selectedImage.id ? { ...img, ...formData } : img
-        )
-      );
-    }
-    setShowAddEditModal(false);
   };
 
   const handleDeleteConfirm = () => {
@@ -207,7 +69,7 @@ const Gallery = () => {
           <h2 className="brand-font page-title">Gallery Management</h2>
           <p className="text-muted small mb-0">Manage hotel images and gallery content for public display.</p>
         </div>
-        <button type="button" className="btn btn-luxury-gold mt-3 mt-md-0" onClick={openAddModal}>
+        <button type="button" className="btn btn-luxury-gold mt-3 mt-md-0" onClick={() => navigate('/admin/gallery/add')}>
           <i className="bi bi-plus-lg me-2"></i>Add Image
         </button>
       </div>
@@ -340,7 +202,7 @@ const Gallery = () => {
                       type="button"
                       className="btn-overlay-action edit"
                       title="Edit Image"
-                      onClick={() => openEditModal(img)}
+                      onClick={() => navigate(`/admin/gallery/edit/${img.id}`)}
                     >
                       <i className="bi bi-pencil"></i>
                     </button>
@@ -392,114 +254,6 @@ const Gallery = () => {
           <li className="page-item"><span className="page-link">Next</span></li>
         </ul>
       </div>
-
-      {/* 6. Add/Edit Image Modal */}
-      {showAddEditModal && (
-        <div className="modal-backdrop-custom">
-          <div className="custom-modal-dialog">
-            <div className="luxury-card modal-content-box p-4">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h4 className="brand-font mb-0">
-                  {modalMode === 'add' ? 'Add Gallery Image' : 'Edit Gallery Image'}
-                </h4>
-                <button type="button" className="btn-close" onClick={() => setShowAddEditModal(false)}></button>
-              </div>
-              <form onSubmit={handleSaveImage}>
-                <div className="row g-3">
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Image Title</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      required
-                      placeholder="e.g. Presidential Suite Bedroom"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Category</label>
-                    <select
-                      className="form-select"
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    >
-                      <option value="Hotel">Hotel</option>
-                      <option value="Rooms">Rooms</option>
-                      <option value="Dining">Dining</option>
-                      <option value="Facilities">Facilities</option>
-                      <option value="Events">Events</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Status</label>
-                    <select
-                      className="form-select"
-                      value={formData.status}
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    >
-                      <option value="Published">Published</option>
-                      <option value="Draft">Draft</option>
-                    </select>
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Image URL / Select</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="https://images.unsplash.com/..."
-                      value={formData.url}
-                      onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6">
-                    <label className="form-label small fw-semibold">Display Order</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={formData.displayOrder}
-                      onChange={(e) => setFormData({ ...formData, displayOrder: e.target.value })}
-                    />
-                  </div>
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Image Upload (UI Mock)</label>
-                    <input type="file" className="form-control" />
-                  </div>
-                  <div className="col-12">
-                    <label className="form-label small fw-semibold">Description</label>
-                    <textarea
-                      className="form-control"
-                      rows="3"
-                      placeholder="Enter brief description of the photo..."
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    ></textarea>
-                  </div>
-                  {formData.url && (
-                    <div className="col-12">
-                      <label className="form-label small fw-semibold d-block">Preview</label>
-                      <img src={formData.url} alt="Preview" className="img-thumbnail modal-preview-img" />
-                    </div>
-                  )}
-                </div>
-                <div className="d-flex justify-content-end gap-2 mt-4">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => setShowAddEditModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn btn-luxury-gold">
-                    Save Image
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* 7. Image Preview Modal */}
       {showViewModal && selectedImage && (
