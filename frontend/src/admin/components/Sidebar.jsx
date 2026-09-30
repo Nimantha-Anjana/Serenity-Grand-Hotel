@@ -27,6 +27,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   const handleLogout = () => {
     // Navigate directly to the login page
+    localStorage.removeItem('sgh_token');
+    localStorage.removeItem('sgh_user');
     navigate('/admin/login');
   };
 

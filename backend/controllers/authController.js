@@ -6,6 +6,8 @@ import { otp, randomToken } from '../utils/reference.js';
 import { sendOtpEmail, sendResetEmail } from '../utils/sendEmail.js';
 
 const safeUser = user => { const x=user.toJSON(); delete x.passwordHash; return x; };
+const profileFields = profile => profile ? profile.toJSON() : {};
+const publicUser = (user, profile) => ({ ...safeUser(user), ...profileFields(profile) });
 
 export async function register(req,res,next){
   try {
@@ -29,7 +31,8 @@ export async function verifyOtp(req,res,next){try{
  const v=await EmailVerification.findOne({where:{userId:user.id,otpCode:code,verifiedAt:null},order:[['createdAt','DESC']]});
  if(!v)return res.status(400).json({message:'Incorrect OTP code.'}); if(new Date()>new Date(v.expiresAt))return res.status(400).json({message:'OTP code has expired.'});
  await v.update({verifiedAt:new Date()}); await user.update({isVerified:true});
- res.json({message:'Email verified successfully.',token:signToken(user),user:safeUser(user)});
+ const profile = await CustomerProfile.findOne({ where: { userId: user.id } });
+ res.json({message:'Email verified successfully.',token:signToken(user),user:publicUser(user, profile),customer:publicUser(user, profile)});
 }catch(e){next(e);}}
 
 export async function resendOtp(req,res,next){try{
@@ -64,14 +67,16 @@ export async function resetPassword(req,res,next){try{
 
 export async function me(req,res){
  const include=req.user.role==='admin'?[{model:AdminProfile,as:'adminProfile'}]:[{model:CustomerProfile,as:'customerProfile'}];
- const user=await User.findByPk(req.user.id,{include}); res.json(safeUser(user));
+ const user=await User.findByPk(req.user.id,{include});
+ const profile = req.user.role === 'admin' ? user.adminProfile : user.customerProfile;
+ res.json(publicUser(user, profile));
 }
 
 export async function updateProfile(req,res,next){try{
  const user=await User.findByPk(req.user.id); const {name,phone}=req.body; if(name!==undefined)user.name=name;if(phone!==undefined)user.phone=phone;if(req.file)user.avatar=`/uploads/${req.file.filename}`; await user.save();
  const Profile=req.user.role==='admin'?AdminProfile:CustomerProfile; let profile=await Profile.findOne({where:{userId:user.id}}); if(!profile)profile=await Profile.create({userId:user.id});
  const allowed=req.user.role==='admin'?['dateOfBirth','gender','city','country','address']:['nicNumber','address','city','country','dateOfBirth','gender']; const data={}; for(const k of allowed)if(req.body[k]!==undefined)data[k]=req.body[k]; await profile.update(data);
- res.json({message:'Profile updated.',user:safeUser(user),profile});
+ res.json({message:'Profile updated.',user:publicUser(user, profile),customer:publicUser(user, profile),profile});
 }catch(e){next(e);}}
 
 export async function changePassword(req,res,next){try{const {currentPassword,newPassword}=req.body;if(!currentPassword||!newPassword)return res.status(400).json({message:'Current and new password are required.'});const user=await User.findByPk(req.user.id);if(!(await bcrypt.compare(currentPassword,user.passwordHash)))return res.status(400).json({message:'Current password is incorrect.'});await user.update({passwordHash:await bcrypt.hash(newPassword,12)});res.json({message:'Password changed successfully.'});}catch(e){next(e);}}

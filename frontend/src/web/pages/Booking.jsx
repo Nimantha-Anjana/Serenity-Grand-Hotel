@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { bookingRooms } from '../data/rooms';
 import '../css/Booking.css';
+import { bookingsApi } from '../../services/api';
 
 // Local date as YYYY-MM-DD (used for the "min" attribute on date inputs)
 const todayString = () => new Date().toLocaleDateString('en-CA');
@@ -48,6 +49,7 @@ function Booking() {
   });
   const [errors, setErrors] = useState({});
   const [confirmation, setConfirmation] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const selectedRoom = bookingRooms.find((r) => r.id === form.roomId);
   const nights = countNights(form.checkIn, form.checkOut);
@@ -72,17 +74,38 @@ function Booking() {
     return next;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const found = validate();
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    // TODO: send the booking to the backend API (POST /api/bookings) once it exists.
-    // Field names match the admin Bookings page: guest, room, checkIn, checkOut, guestsCount, amount.
-    const reference = `SGH-${Math.floor(1000 + Math.random() * 9000)}`;
-    setConfirmation({ reference, ...form, roomName: selectedRoom.name, nights, total });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSubmitting(true);
+    try {
+      const data = await bookingsApi.publicCreate({
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        roomId: form.roomId,
+        checkIn: form.checkIn,
+        checkOut: form.checkOut,
+        adults: Number(form.adults),
+        children: Number(form.children),
+        specialRequests: form.requests,
+      });
+      setConfirmation({
+        reference: data.bookingReference || data.booking?.bookingReference || data.id || 'Pending',
+        ...form,
+        roomName: selectedRoom.name,
+        nights,
+        total: Number(data.totalAmount ?? total),
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -215,7 +238,8 @@ function Booking() {
                   <textarea id="requests" name="requests" rows="4" value={form.requests} onChange={handleChange} placeholder="Late check-in, airport pickup, celebrations..." />
                 </div>
 
-                <button type="submit" className="booking-submit">Confirm Booking</button>
+                {errors.submit && <span className="booking-error">{errors.submit}</span>}
+                <button type="submit" className="booking-submit" disabled={submitting}>{submitting ? 'Submitting...' : 'Confirm Booking'}</button>
               </form>
 
               {/* SUMMARY */}

@@ -8,6 +8,6 @@ const Message = sequelize.define('Message', {
  messageText: { type: DataTypes.TEXT, allowNull: false, field: 'message_text' },
  isRead: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false, field: 'is_read' },
  sentAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW, field: 'sent_at' },
-}, { tableName: 'messages', timestamps: true, underscored: true });
+}, { tableName: 'messages', timestamps: true, createdAt: false, updatedAt: 'updated_at', underscored: true });
 
 export default Message;

@@ -7,8 +7,15 @@ export const conversations=asyncHandler(async(req,res)=>{
  const filtered=req.user.role==='admin'?rows:rows.filter(c=>c.participants.some(p=>p.userId===req.user.id)); res.json(filtered);
 });
 export const createConversation=asyncHandler(async(req,res)=>{
- const {participantId,subject,bookingId,firstMessage}=req.body; if(req.user.role==='customer'&&!participantId)return res.status(400).json({message:'participantId is required.'});
- const otherId=participantId||req.body.customerId; if(!otherId)return res.status(400).json({message:'Recipient is required.'});
+ const {participantId,subject,bookingId}=req.body;
+ let firstMessage=req.body.firstMessage || req.body.content || req.body.messageText;
+ let otherId=participantId||req.body.customerId;
+ if(req.user.role==='customer'&&!otherId){
+   const admin=await User.findOne({where:{role:'admin',status:'active'},order:[['id','ASC']]});
+   if(!admin)return res.status(503).json({message:'No active administrator is available.'});
+   otherId=admin.id;
+ }
+ if(!otherId)return res.status(400).json({message:'Recipient is required.'});
  const other=await User.findByPk(otherId);if(!other)return res.status(404).json({message:'Recipient not found.'});
  const c=await Conversation.create({subject,bookingId}); await ConversationParticipant.bulkCreate([{conversationId:c.id,userId:req.user.id},{conversationId:c.id,userId:other.id}]);
  if(firstMessage){const m=await Message.create({conversationId:c.id,senderId:req.user.id,messageText:firstMessage});if(Array.isArray(req.body.attachments))await MessageAttachment.bulkCreate(req.body.attachments.map(a=>({messageId:m.id,fileName:a.fileName,fileUrl:a.fileUrl,fileType:a.fileType,fileSize:a.fileSize})));}

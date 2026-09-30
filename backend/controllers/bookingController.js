@@ -1,6 +1,8 @@
 import { Op } from 'sequelize';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { sequelize } from '../config/db.js';
-import { Booking, BookingGuest, Payment, Room, User, BookingSetting } from '../models/index.js';
+import { Booking, BookingGuest, Payment, Room, User, BookingSetting, CustomerProfile, NotificationSetting } from '../models/index.js';
 import { asyncHandler } from './crudController.js';
 import { bookingReference } from '../utils/reference.js';
 import { audit } from '../utils/audit.js';
@@ -25,6 +27,20 @@ export const create = asyncHandler(async(req,res)=>{
   if(Array.isArray(guests)) for(const g of guests) await BookingGuest.create({bookingId:booking.id,fullName:g.fullName,email:g.email,phone:g.phone,guestType:g.guestType||'adult'},{transaction});
   await transaction.commit(); await audit(req,'CREATE','booking',`Created booking ${booking.bookingReference}`); res.status(201).json(await Booking.findByPk(booking.id,{include}));
  }catch(e){await transaction.rollback();throw e;}
+});
+
+export const createPublic = asyncHandler(async(req,res,next)=>{
+ const {fullName,email,phone,roomId,checkIn,checkOut,adults=1,children=0,specialRequests}=req.body||{};
+ if(!fullName||!email||!roomId||!checkIn||!checkOut)return res.status(400).json({message:'Full name, email, room, check-in and check-out are required.'});
+ const normalized=email.trim().toLowerCase();
+ let customer=await User.findOne({where:{email:normalized,role:'customer'}});
+ if(!customer){
+   customer=await User.create({name:fullName.trim(),email:normalized,phone:phone||null,passwordHash:await bcrypt.hash(`SGH-${crypto.randomUUID()}`,10),role:'customer',isVerified:false,status:'active'});
+   await CustomerProfile.create({userId:customer.id});
+   await NotificationSetting.create({userId:customer.id});
+ } else if(phone && !customer.phone){ await customer.update({phone}); }
+ req.user=customer;
+ return create(req,res,next);
 });
 export const list=asyncHandler(async(req,res)=>{const where={};if(req.user.role==='customer')where.customerId=req.user.id;else if(req.query.customerId)where.customerId=req.query.customerId;if(req.query.status)where.bookingStatus=req.query.status;res.json(await Booking.findAll({where,include,order:[['createdAt','DESC']]}));});
 export const getOne=asyncHandler(async(req,res)=>{const b=await Booking.findByPk(req.params.id,{include});if(!b)return res.status(404).json({message:'Booking not found.'});if(req.user.role==='customer'&&b.customerId!==req.user.id)return res.status(403).json({message:'Access denied.'});res.json(b);});

@@ -9,15 +9,16 @@ const LIST_PATH = '/admin/bookings';
 
 export default function BookingForm() {
   const navigate = useNavigate();
-  const { bookings, setBookings } = useAdminData();
+  const { bookings, setBookings, rooms } = useAdminData();
 
   const [newReservation, setNewReservation] = useState({
     guestName: '',
     guestEmail: '',
     guestPhone: '',
-    roomName: 'Grand Deluxe Ocean View',
-    roomType: 'Deluxe',
-    roomNumber: '101',
+    roomId: rooms[0]?.id ?? '',
+    roomName: rooms[0]?.name ?? '',
+    roomType: rooms[0]?.type ?? '',
+    roomNumber: rooms[0]?.number ?? '',
     checkIn: '',
     checkOut: '',
     adults: 2,
@@ -28,6 +29,20 @@ export default function BookingForm() {
   });
 
   const goBack = () => navigate(LIST_PATH);
+
+  // Total = room price x nights (the server calculates the final amount again).
+  const withAmount = (data) => {
+    const room = rooms.find((r) => String(r.id) === String(data.roomId));
+    const nights = data.checkIn && data.checkOut
+      ? Math.round((new Date(data.checkOut) - new Date(data.checkIn)) / 86400000)
+      : 0;
+    return { ...data, amount: room && nights > 0 ? room.price * nights : '' };
+  };
+  const changeField = (patch) => setNewReservation((prev) => withAmount({ ...prev, ...patch }));
+  const changeRoom = (roomId) => {
+    const room = rooms.find((r) => String(r.id) === String(roomId));
+    changeField({ roomId, roomName: room?.name ?? '', roomType: room?.type ?? '', roomNumber: room?.number ?? '' });
+  };
 
   const handleCreateReservation = (e) => {
     e.preventDefault();
@@ -44,6 +59,7 @@ export default function BookingForm() {
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'
       },
       room: {
+        id: Number(newReservation.roomId),
         name: newReservation.roomName,
         type: newReservation.roomType,
         number: newReservation.roomNumber
@@ -122,46 +138,21 @@ export default function BookingForm() {
           </div>
 
           <div className="col-12 col-md-6">
-            <label htmlFor="bookingRoomName" className="form-label fs-7 fw-semibold">Room Name *</label>
-            <input
-              type="text"
-              id="bookingRoomName"
-              name="roomName"
-              className="form-control"
-              placeholder="e.g. Royal Penthouse Suite"
-              value={newReservation.roomName}
-              onChange={e => setNewReservation({ ...newReservation, roomName: e.target.value })}
-            />
-          </div>
-
-          <div className="col-6 col-md-3">
-            <label htmlFor="bookingRoomType" className="form-label fs-7 fw-semibold">Room Type</label>
+            <label htmlFor="bookingRoom" className="form-label fs-7 fw-semibold">Room *</label>
             <select
-              id="bookingRoomType"
-              name="roomType"
+              id="bookingRoom"
+              name="roomId"
               className="form-select"
-              value={newReservation.roomType}
-              onChange={e => setNewReservation({ ...newReservation, roomType: e.target.value })}
+              value={newReservation.roomId}
+              onChange={e => changeRoom(e.target.value)}
             >
-              <option value="Penthouse">Penthouse</option>
-              <option value="Presidential">Presidential</option>
-              <option value="Deluxe">Deluxe</option>
-              <option value="Villa">Villa</option>
-              <option value="Suite">Suite</option>
+              {rooms.length === 0 && <option value="">No rooms available - add a room first</option>}
+              {rooms.map(r => (
+                <option key={r.id} value={r.id} disabled={r.status === 'Maintenance'}>
+                  {r.number} - {r.name} ({r.type}) - ${r.price}/night{r.status === 'Maintenance' ? ' - maintenance' : ''}
+                </option>
+              ))}
             </select>
-          </div>
-
-          <div className="col-6 col-md-3">
-            <label htmlFor="bookingRoomNumber" className="form-label fs-7 fw-semibold">Room Number *</label>
-            <input
-              type="text"
-              id="bookingRoomNumber"
-              name="roomNumber"
-              className="form-control"
-              placeholder="PH-01"
-              value={newReservation.roomNumber}
-              onChange={e => setNewReservation({ ...newReservation, roomNumber: e.target.value })}
-            />
           </div>
 
           <div className="col-12 col-md-3">
@@ -172,7 +163,7 @@ export default function BookingForm() {
               name="checkIn"
               className="form-control"
               value={newReservation.checkIn}
-              onChange={e => setNewReservation({ ...newReservation, checkIn: e.target.value })}
+              onChange={e => changeField({ checkIn: e.target.value })}
             />
           </div>
 
@@ -184,7 +175,7 @@ export default function BookingForm() {
               name="checkOut"
               className="form-control"
               value={newReservation.checkOut}
-              onChange={e => setNewReservation({ ...newReservation, checkOut: e.target.value })}
+              onChange={e => changeField({ checkOut: e.target.value })}
             />
           </div>
 
@@ -225,9 +216,9 @@ export default function BookingForm() {
               id="bookingAmount"
               name="amount"
               className="form-control"
-              placeholder="3500"
+              placeholder="Select room and dates"
               value={newReservation.amount}
-              onChange={e => setNewReservation({ ...newReservation, amount: e.target.value })}
+              readOnly
             />
           </div>
 
@@ -241,7 +232,7 @@ export default function BookingForm() {
               onChange={e => setNewReservation({ ...newReservation, paymentStatus: e.target.value })}
             >
               <option value="Paid in Full">Paid in Full</option>
-              <option value="Deposit Paid (50%)">Deposit Paid (50%)</option>
+              <option value="Deposit Paid">Deposit Paid</option>
               <option value="Pending">Pending</option>
             </select>
           </div>
